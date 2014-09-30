@@ -1,0 +1,4 @@
+com\google\appengine\demos\bracket\CreateTeamServlet.class
+com\google\appengine\demos\guestbook\GuestbookServlet.class
+com\google\appengine\demos\bracket\BracketServlet.class
+com\google\appengine\demos\guestbook\SignGuestbookServlet.class

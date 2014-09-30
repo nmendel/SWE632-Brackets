@@ -1,0 +1,8 @@
+URL:
+http://localhost:8080/guestbook.jsp?guestbookName=default
+
+mvn clean install
+mvn appengine:devserver
+
+Test:
+curl -X post localhost:8080 -H 'content-type: application/json; charset=utf-9' -d "{'content': 'test_from_curl', 'guestBookName': 'default'}"
