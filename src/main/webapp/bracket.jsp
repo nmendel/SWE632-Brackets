@@ -58,7 +58,7 @@
 <%
 } else {
 %>
-<p>Messages in Guestbook '${fn:escapeXml(tournamentName)}'.</p>
+<p>Teams in tournament '${fn:escapeXml(tournamentName)}'.</p>
 <%
     for (Entity team : teams) {
         pageContext.setAttribute("team_content",
