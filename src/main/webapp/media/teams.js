@@ -1,3 +1,12 @@
+Ext.require([
+    'Ext.grid.*',
+    'Ext.data.*',
+    'Ext.panel.*',
+	'Ext.data.TeamModel',
+    'Ext.layout.container.Border'
+]);
+
+
 Ext.onReady(function(){
 	var data = [{id: 1, team_name: 'Hydras', elo:1300},
 			{id: 2, team_name: 'Burglars', elo:1100},
@@ -7,21 +16,14 @@ Ext.onReady(function(){
 		console.log(teams);
 		var t = [];
 		for(var i; i < teams.length; i++) {
-			t.push(teams[i].innerHTML);
+		    if($(teams[i]).is('div'))  {
+			    t.push(teams[i].innerHTML);
+			}
 		}
 		console.log(t);
-		
-		Ext.define('TeamModel',{
-			extend: 'Ext.data.Model',
-			fields: [ 
-				{name: 'id'},
-				{name: 'team_name'},
-				{name: 'elo'},
-			]
-		});
 					
 		var store = Ext.create('Ext.data.Store', {
-			model: 'TeamModel',
+			model: 'Ext.data.TeamModel',
 			autoLoad: true,
 			data: data
 		});
@@ -65,7 +67,9 @@ Ext.onReady(function(){
 					text : "Create",
 					listeners: {
 						click: function() {
-							addTeam(Ext.getCmp('team_name').value, 1200);
+						    var nameField = Ext.getCmp('team_name');
+							addTeam(nameField.value, 1200);
+							nameField.value = '';
 						}
 					}
 				}]
