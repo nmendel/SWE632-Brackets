@@ -6,7 +6,8 @@ mvn appengine:devserver
 mvn appengine:update
 
 Test:
-curl -X post localhost:8080 -H 'content-type: application/json; charset=utf-9' -d "{'content': 'test_team_from_curl', 'tournamentName': 'default'}"
+curl -X post localhost:8080/create -H 'content-type: application/json; charset=utf-8' -d "{'content': 'test_team_from_curl', 'tournamentName': 'default'}"
 
 
 git push origin master
+

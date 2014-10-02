@@ -36,8 +36,7 @@
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>guestbook.jsp</welcome-file>
-    </welcome-file-list>
-    <welcome-file-list>
-        <welcome-file>bracket.jsp</welcome-file>
+		<welcome-file>bracket.jsp</welcome-file>
+		<welcome-file>teams.jsp</welcome-file>
     </welcome-file-list>
 </web-app>
