@@ -52,6 +52,7 @@ Ext.onReady(function(){
 					width: 265
 				},
 				items: [{
+					id: 'team_name',
 					fieldLabel: 'New Team',
 					xtype: 'textfield',
 					margin: "10 10 10 10",
@@ -64,7 +65,7 @@ Ext.onReady(function(){
 					text : "Create",
 					listeners: {
 						click: function() {
-							addTeam('test', 1200);
+							addTeam(Ext.getCmp('team_name').value, 1200);
 						}
 					}
 				}]
@@ -84,11 +85,9 @@ Ext.onReady(function(){
 });
 
 function addTeam(name, elo) {
-    var data = {
-	    team_name: name,
-		elo: elo
-	};
-	postData(window.location.origin + '/create', data, function() {
+    var url = window.location.origin + '/create?';
+	url = url + 'tournamentName=default&content=' + name;
+	postData(url, {}, function() {
 	  console.log('now reload the grid');
 	});
 }
