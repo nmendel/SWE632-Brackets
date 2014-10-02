@@ -26,7 +26,7 @@
     // Run an ancestor query to ensure we see the most up-to-date
     // view of the Teams belonging to the selected Tournament.
     Query query = new Query("Team", tournamentKey).addSort("date", Query.SortDirection.DESCENDING);
-    List<Entity> teams = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(5));
+    List<Entity> teams = datastore.prepare(query).asList(FetchOptions.Builder.withLimit(50));
     if (!teams.isEmpty()) {
 
         for (Entity team : teams) {

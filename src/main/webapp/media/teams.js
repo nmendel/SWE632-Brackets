@@ -2,37 +2,36 @@ Ext.require([
     'Ext.grid.*',
     'Ext.data.*',
     'Ext.panel.*',
-	'Ext.data.TeamModel',
     'Ext.layout.container.Border'
 ]);
 
+Ext.define('TeamModel',{
+	extend: 'Ext.data.Model',
+	fields: [ 
+		{name: 'team_name', convert: function(value, record) {
+			return record.raw;
+		}},
+	]
+});
 
 Ext.onReady(function(){
-	var data = [{id: 1, team_name: 'Hydras', elo:1300},
-			{id: 2, team_name: 'Burglars', elo:1100},
-			{id: 3, team_name: 'Tornados', elo:1600}];
 	get(window.location.origin + '/teams.jsp', function(resp) {
-		var teams = $.parseHTML(resp);
-		console.log(teams);
-		var t = [];
-		for(var i; i < teams.length; i++) {
-		    if($(teams[i]).is('div'))  {
-			    t.push(teams[i].innerHTML);
-			}
-		}
-		console.log(t);
-					
-		var store = Ext.create('Ext.data.Store', {
-			model: 'Ext.data.TeamModel',
-			autoLoad: true,
-			data: data
+		
+		var data = getTeams(resp);
+		var store = Ext.create('Ext.data.ArrayStore', {
+		    id: 'team_store',
+			model: 'TeamModel',
+			//autoLoad: true,
+			data: data,
+			expandData: true
 		});
 				
 		var grid = Ext.create('Ext.grid.Panel', {
+			id: 'team_grid',
 			store: store,
 			columns: [
 				{text: "Team Name", width: 120, dataIndex: 'team_name', sortable: true},
-				{text: "ELO", flex: 1, dataIndex: 'elo', sortable: true},
+				//{text: "ELO", flex: 1, dataIndex: 'elo', sortable: true},
 			],
 			forceFit: true,
 			height:210,
@@ -69,7 +68,8 @@ Ext.onReady(function(){
 						click: function() {
 						    var nameField = Ext.getCmp('team_name');
 							addTeam(nameField.value, 1200);
-							nameField.value = '';
+							nameField.setValue('');
+							// TODO: reload the grid
 						}
 					}
 				}]
@@ -85,8 +85,31 @@ Ext.onReady(function(){
 			layout: 'border',
 			items: [grid, form]
 		});
+		
+		store.loadData(data);
 	});
 });
+
+function reloadGrid() {
+    get(window.location.origin + '/teams.jsp', function(resp) {
+		var data = getTeams(resp);
+		var store = Ext.getCmp('team_grid').getStore();
+		store.setData(data);
+		//store.reload();
+	});
+}
+
+function getTeams(resp) {
+	var teams = $.parseHTML(resp);
+	var data = [];
+	for(var i = 0; i < teams.length; i++) {
+		var team = teams[i];
+		if($(team).is('div'))  {
+			data.push(team.innerHTML);
+		}
+	}
+	return data;
+}
 
 function addTeam(name, elo) {
     var url = window.location.origin + '/create?';
