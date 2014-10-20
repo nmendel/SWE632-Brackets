@@ -1,9 +1,21 @@
-Ext.require([
-    'Ext.grid.*',
-    'Ext.data.*',
-    'Ext.panel.*',
-    'Ext.layout.container.Border'
-]);
+(function() {
+    var cfg = Ext.Loader.getConfig();
+    cfg.enabled = true;
+    Ext.Loader.setConfig(cfg);
+    Ext.Loader.setPath('MyApp', 'media/js');
+    Ext.require([
+	    'Ext.grid.*',
+	    'Ext.data.*',
+	    'Ext.panel.*',
+	    'Ext.layout.container.Border'
+	]);
+    Ext.onReady(function() {
+        //Ext.create('MyApp.views.MainContainer').show();
+        teams.init();
+    });
+})();
+
+
 
 Ext.define('TeamModel',{
 	extend: 'Ext.data.Model',
@@ -14,15 +26,25 @@ Ext.define('TeamModel',{
 	]
 });
 
-Ext.onReady(function(){
-	get(window.location.origin + '/teams.jsp', function(resp) {
+
+Ext.define('MyApp.views.MainContainer', {
+	extend: 'Ext.Panel',
+
+});
+
+var teams = {
+	init: function() {
 		
-		var data = getTeams(resp);
+		get(window.location.origin + '/teams.jsp', function(resp) {
+			var data = getTeams(resp);
+			store.loadData(data);
+		});
+					
 		var store = Ext.create('Ext.data.ArrayStore', {
 		    id: 'team_store',
 			model: 'TeamModel',
 			//autoLoad: true,
-			data: data,
+			//data: data,
 			expandData: true
 		});
 				
@@ -75,8 +97,7 @@ Ext.onReady(function(){
 				}]
 			}]
 		});
-			
-		Ext.create('Ext.Panel', {
+		var container = Ext.create('Ext.panel', {
 			renderTo: 'main-container',
 			frame: true,
 			title: 'Team List',
@@ -85,10 +106,8 @@ Ext.onReady(function(){
 			layout: 'border',
 			items: [grid, form]
 		});
-		
-		store.loadData(data);
-	});
-});
+	}
+};
 
 function reloadGrid() {
     get(window.location.origin + '/teams.jsp', function(resp) {
