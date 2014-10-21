@@ -73,14 +73,21 @@
         <text>Jaguars</text>
       </controlProperties>
     </control>
-    <control controlID="29" controlTypeID="com.balsamiq.mockups::Canvas" x="75" y="575" w="232" h="87" measuredW="100" measuredH="70" zOrder="18" locked="false" isInGroup="-1">
+    <control controlID="28" controlTypeID="com.balsamiq.mockups::DataGrid" x="857" y="371" w="360" h="327" measuredW="155" measuredH="171" zOrder="18" locked="false" isInGroup="-1">
+      <controlProperties>
+        <hasHeader>true</hasHeader>
+        <selectedIndex>0</selectedIndex>
+        <text>Team%20Name%0AEnter%20New%20Team%20Name%0ATornadoes%0AYogis%0ABarracudas%0AScorpians</text>
+      </controlProperties>
+    </control>
+    <control controlID="29" controlTypeID="com.balsamiq.mockups::Canvas" x="75" y="575" w="232" h="87" measuredW="100" measuredH="70" zOrder="19" locked="false" isInGroup="-1">
       <controlProperties>
         <backgroundAlpha>0.5</backgroundAlpha>
         <borderStyle>none</borderStyle>
         <color>2848996</color>
       </controlProperties>
     </control>
-    <control controlID="30" controlTypeID="com.balsamiq.mockups::Button" x="373" y="649" w="142" h="37" measuredW="135" measuredH="27" zOrder="19" locked="false" isInGroup="-1">
+    <control controlID="30" controlTypeID="com.balsamiq.mockups::Button" x="373" y="649" w="142" h="37" measuredW="135" measuredH="27" zOrder="20" locked="false" isInGroup="-1">
       <controlProperties>
         <size>14</size>
         <text>Start%20Tournament</text>
@@ -92,15 +99,27 @@
         <text/>
       </controlProperties>
     </control>
-    <control controlID="35" controlTypeID="com.balsamiq.mockups::HRule" x="857" y="320" w="360" h="-1" measuredW="100" measuredH="10" zOrder="20" locked="false" isInGroup="-1"/>
-    <control controlID="36" controlTypeID="com.balsamiq.mockups::ButtonBar" x="897" y="275" w="260" h="35" measuredW="179" measuredH="32" zOrder="21" locked="false" isInGroup="-1">
+    <control controlID="33" controlTypeID="com.balsamiq.mockups::Button" x="893" y="335" w="131" h="29" measuredW="100" measuredH="27" zOrder="21" locked="false" isInGroup="-1">
       <controlProperties>
-        <selectedIndex>-1</selectedIndex>
+        <icon>UsersIcon%7Cxsmall</icon>
+        <state>selected</state>
+        <text>Add%20Team</text>
+      </controlProperties>
+    </control>
+    <control controlID="34" controlTypeID="com.balsamiq.mockups::Button" x="1031" y="335" w="131" h="29" measuredW="125" measuredH="27" zOrder="22" locked="false" isInGroup="-1">
+      <controlProperties>
+        <icon>UsersIcon%7Cxsmall</icon>
+        <text>Remove%20Team</text>
+      </controlProperties>
+    </control>
+    <control controlID="35" controlTypeID="com.balsamiq.mockups::HRule" x="857" y="320" w="360" h="-1" measuredW="100" measuredH="10" zOrder="23" locked="false" isInGroup="-1"/>
+    <control controlID="36" controlTypeID="com.balsamiq.mockups::ButtonBar" x="897" y="275" w="260" h="35" measuredW="179" measuredH="32" zOrder="24" locked="false" isInGroup="-1">
+      <controlProperties>
         <size>18</size>
         <text>Rugrats%2C%20Jaguars</text>
       </controlProperties>
     </control>
-    <control controlID="37" controlTypeID="com.balsamiq.mockups::Label" x="950" y="232" w="154" h="-1" measuredW="145" measuredH="28" zOrder="22" locked="false" isInGroup="-1">
+    <control controlID="37" controlTypeID="com.balsamiq.mockups::Label" x="950" y="232" w="154" h="-1" measuredW="145" measuredH="28" zOrder="25" locked="false" isInGroup="-1">
       <controlProperties>
         <size>20</size>
         <text>Change%20teams%3F</text>

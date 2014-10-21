@@ -79,14 +79,7 @@
         <text>Jaguars</text>
       </controlProperties>
     </control>
-    <control controlID="39" controlTypeID="com.balsamiq.mockups::Canvas" x="75" y="575" w="232" h="87" measuredW="100" measuredH="70" zOrder="20" locked="false" isInGroup="-1">
-      <controlProperties>
-        <backgroundAlpha>0.5</backgroundAlpha>
-        <borderStyle>none</borderStyle>
-        <color>2848996</color>
-      </controlProperties>
-    </control>
-    <control controlID="40" controlTypeID="com.balsamiq.mockups::Button" x="373" y="649" w="142" h="37" measuredW="135" measuredH="27" zOrder="21" locked="false" isInGroup="-1">
+    <control controlID="40" controlTypeID="com.balsamiq.mockups::Button" x="373" y="649" w="142" h="37" measuredW="135" measuredH="27" zOrder="20" locked="false" isInGroup="-1">
       <controlProperties>
         <size>14</size>
         <text>Start%20Tournament</text>
