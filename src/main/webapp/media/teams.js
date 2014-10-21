@@ -10,7 +10,7 @@
 	    'Ext.layout.container.Border'
 	]);
     Ext.onReady(function() {
-        //Ext.create('MyApp.views.MainContainer').show();
+        Ext.create('MyApp.views.MainContainer');
         teams.init();
     });
 })();
@@ -29,7 +29,15 @@ Ext.define('TeamModel',{
 
 Ext.define('MyApp.views.MainContainer', {
 	extend: 'Ext.Panel',
-
+    renderTo: 'main-container',
+    id: 'main-container',
+	frame: true,
+	title: 'Team List',
+	width: 580,
+	height: 400,
+	margin: '20 20 20 20',
+	layout: 'border',
+	items: []
 });
 
 var teams = {
@@ -57,6 +65,7 @@ var teams = {
 			],
 			forceFit: true,
 			height:210,
+			margin: '10 10 10 10',
 			split: true,
 			region: 'north'
 		});
@@ -97,15 +106,10 @@ var teams = {
 				}]
 			}]
 		});
-		var container = Ext.create('Ext.panel', {
-			renderTo: 'main-container',
-			frame: true,
-			title: 'Team List',
-			width: 580,
-			height: 400,
-			layout: 'border',
-			items: [grid, form]
-		});
+		
+		var container = Ext.getCmp('main-container');
+		container.add(grid);
+		container.add(form);
 	}
 };
 
