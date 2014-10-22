@@ -77,10 +77,10 @@
       <controlProperties>
         <hasHeader>true</hasHeader>
         <selectedIndex>0</selectedIndex>
-        <text>Team%20Name%0AEnter%20New%20Team%20Name%0ATornadoes%0AYogis%0ABarracudas%0AScorpians</text>
+        <text>Team%20Name%0AEnter%20New%20Team%20Name%0AVandals%0AYogis%0ABarracudas%0AScorpians</text>
       </controlProperties>
     </control>
-    <control controlID="29" controlTypeID="com.balsamiq.mockups::Canvas" x="75" y="575" w="232" h="87" measuredW="100" measuredH="70" zOrder="19" locked="false" isInGroup="-1">
+    <control controlID="29" controlTypeID="com.balsamiq.mockups::Canvas" x="69" y="335" w="232" h="87" measuredW="100" measuredH="70" zOrder="19" locked="false" isInGroup="-1">
       <controlProperties>
         <backgroundAlpha>0.5</backgroundAlpha>
         <borderStyle>none</borderStyle>
@@ -113,16 +113,16 @@
       </controlProperties>
     </control>
     <control controlID="35" controlTypeID="com.balsamiq.mockups::HRule" x="857" y="320" w="360" h="-1" measuredW="100" measuredH="10" zOrder="23" locked="false" isInGroup="-1"/>
-    <control controlID="36" controlTypeID="com.balsamiq.mockups::ButtonBar" x="897" y="275" w="260" h="35" measuredW="179" measuredH="32" zOrder="24" locked="false" isInGroup="-1">
-      <controlProperties>
-        <size>18</size>
-        <text>Rugrats%2C%20Jaguars</text>
-      </controlProperties>
-    </control>
-    <control controlID="37" controlTypeID="com.balsamiq.mockups::Label" x="950" y="232" w="154" h="-1" measuredW="145" measuredH="28" zOrder="25" locked="false" isInGroup="-1">
+    <control controlID="37" controlTypeID="com.balsamiq.mockups::Label" x="950" y="232" w="154" h="-1" measuredW="145" measuredH="28" zOrder="24" locked="false" isInGroup="-1">
       <controlProperties>
         <size>20</size>
         <text>Change%20teams%3F</text>
+      </controlProperties>
+    </control>
+    <control controlID="38" controlTypeID="com.balsamiq.mockups::ButtonBar" x="885" y="270" w="305" h="36" measuredW="267" measuredH="28" zOrder="25" locked="false" isInGroup="-1">
+      <controlProperties>
+        <size>14</size>
+        <text>Lovable%20Scallywags%2C%20Storm%20Chasers</text>
       </controlProperties>
     </control>
   </controls>

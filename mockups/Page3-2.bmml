@@ -15,8 +15,8 @@
     </control>
     <control controlID="6" controlTypeID="com.balsamiq.mockups::DataGrid" x="857" y="190" w="360" h="482" measuredW="357" measuredH="171" zOrder="6" locked="false" isInGroup="-1">
       <controlProperties>
-        <selectedIndex>3</selectedIndex>
-        <text>Tournament%20Name%20%5E%2C%20Date%20Created%20v%2C%20Started%2C%20Finished%0ABattle%20Zone%2C%20Jun%2023%5C%2C%202014%2C%20%5Bx%5D%2C%20%5Bx%5D%0ABattle%20of%20the%20Year%2C%20Oct%203%5C%2C%202014%2C%20%5B%5D%2C%20%5B%5D%0ADiplomacy%20over%20mail%2C%20Oct%206%5C%2C%202014%2C%20%5Bx%5D%2C%20%5B%5D%0AHead%20Chef%2C%20Oct%2012%5C%2C%202014%2C%20%5B%5D%2C%20%5B%5D%0AFinal%20Countdown%2C%20Oct%2019%5C%2C2014%2C%20%5Bx%5D%2C%20%5Bx%5D</text>
+        <selectedIndex>4</selectedIndex>
+        <text>Tournament%20Name%20%5E%2C%20Date%20Created%20v%2C%20Started%2C%20Finished%0ABattle%20Zone%2C%20Jun%2023%5C%2C%202014%2C%20%5Bx%5D%2C%20%5Bx%5D%0ABattle%20of%20the%20Year%2C%20Oct%203%5C%2C%202014%2C%20%5B%5D%2C%20%5B%5D%0ADiplomacy%20over%20mail%2C%20Oct%206%5C%2C%202014%2C%20%5Bx%5D%2C%20%5B%5D%0AFinal%20Countdown%2C%20Oct%2019%5C%2C2014%2C%20%5Bx%5D%2C%20%5Bx%5D%0AHead%20Chef%2C%20Oct%2020%5C%2C%202014%2C%20%5Bx%5D%2C%20%5B%5D</text>
       </controlProperties>
     </control>
     <control controlID="7" controlTypeID="com.balsamiq.mockups::Button" x="185" y="105" w="156" h="40" measuredW="137" measuredH="27" zOrder="2" locked="false" isInGroup="-1">
@@ -51,7 +51,7 @@
     </control>
     <control controlID="33" controlTypeID="com.balsamiq.mockups::Label" x="98" y="335" w="115" h="-1" measuredW="115" measuredH="21" zOrder="14" locked="false" isInGroup="-1">
       <controlProperties>
-        <text>Lovable%20Scallywags</text>
+        <text>Fish%20Oil%20Salesmen</text>
       </controlProperties>
     </control>
     <control controlID="34" controlTypeID="com.balsamiq.mockups::Label" x="98" y="393" w="89" h="-1" measuredW="89" measuredH="21" zOrder="15" locked="false" isInGroup="-1">
@@ -77,12 +77,6 @@
     <control controlID="38" controlTypeID="com.balsamiq.mockups::Label" x="98" y="631" w="48" h="-1" measuredW="48" measuredH="21" zOrder="19" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Jaguars</text>
-      </controlProperties>
-    </control>
-    <control controlID="40" controlTypeID="com.balsamiq.mockups::Button" x="373" y="649" w="142" h="37" measuredW="135" measuredH="27" zOrder="20" locked="false" isInGroup="-1">
-      <controlProperties>
-        <size>14</size>
-        <text>Start%20Tournament</text>
       </controlProperties>
     </control>
     <control controlID="41" controlTypeID="com.balsamiq.mockups::Image" x="69" y="222" w="740" h="450" measuredW="474" measuredH="311" zOrder="10" locked="false" isInGroup="-1">
