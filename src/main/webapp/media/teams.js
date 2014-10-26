@@ -1,4 +1,4 @@
-(function() {
+/*(function() {
     var cfg = Ext.Loader.getConfig();
     cfg.enabled = true;
     Ext.Loader.setConfig(cfg);
@@ -14,7 +14,7 @@
         teams.init();
     });
 })();
-
+*/
 
 
 Ext.define('TeamModel',{
@@ -110,7 +110,18 @@ var teams = {
 		var container = Ext.getCmp('main-container');
 		container.add(grid);
 		container.add(form);
-	}
+	},
+	
+	createAccordionPanel: function() {
+		// TODO: need grid and stuff
+		return Ext.create('Ext.panel.Panel', {
+			html: "<div>content</div>",
+            title:'Teams',
+            autoScroll: true,
+            border: false,
+            iconCls: 'settings'
+		});
+	},
 };
 
 function reloadGrid() {

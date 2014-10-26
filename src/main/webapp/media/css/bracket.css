@@ -1,0 +1,65 @@
+body {
+	font-family:"Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+
+#app-header {
+    color: #596F8F;
+    font-size: 22px;
+    font-weight: 200;
+    padding: 4px 15px;
+    text-shadow: 0 1px 0 #fff;
+}
+
+.x-theme-neptune #app-header {
+    color: white;
+    text-shadow: none;
+}
+
+#app-msg {
+    background: #D1DDEF;
+    border: 1px solid #ACC3E4;
+    padding: 3px 15px;
+    font-weight: bold;
+    font-size: 13px;
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.x-panel-ghost {
+    z-index: 1;
+}
+.x-border-layout-ct {
+    background: #DFE8F6;
+}
+
+.settings {
+    background-image:url(../ext-4.2.1/icons/fam/folder_wrench.png);
+}
+.nav {
+    background-image:url(../ext-4.2.1/icons/fam/folder_go.png);
+}
+.info {
+    background-image:url(../ext-4.2.1/icons/fam/information.png);
+}
+
+#logo {
+    width: 55px;
+    height: 55px;
+    overflow:hidden;
+    position: relative;
+}
+
+#logo img {
+    position: absolute;
+    width: 61px;
+    height: 61px;
+    top: -15px;
+    left: -10px;
+
+}
+
+.logo-text {
+	color: #99CCCC;
+	margin-top: -20px;
+	font-family: "Comic Sans MS", cursive, sans-serif;
+}
