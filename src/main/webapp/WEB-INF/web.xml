@@ -15,8 +15,12 @@
         <servlet-class>com.google.appengine.demos.bracket.CreateTeamServlet</servlet-class>
     </servlet>
 	<servlet>
-        <servlet-name>bracket</servlet-name>
-        <servlet-class>com.google.appengine.demos.bracket.BracketServlet</servlet-class>
+        <servlet-name>tournaments</servlet-name>
+        <servlet-class>com.google.appengine.demos.bracket.TournamentServlet</servlet-class>
+    </servlet>
+	<servlet>
+        <servlet-name>teams</servlet-name>
+        <servlet-class>com.google.appengine.demos.bracket.TeamServlet</servlet-class>
     </servlet>
 	<servlet>
         <servlet-name>tutorialbracket</servlet-name>
@@ -35,10 +39,14 @@
         <url-pattern>/create</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>bracket</servlet-name>
-        <url-pattern>/bracket</url-pattern>
+        <servlet-name>teams</servlet-name>
+        <url-pattern>/teams</url-pattern>
     </servlet-mapping>
-        <servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>tournaments</servlet-name>
+        <url-pattern>/tournaments</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
         <servlet-name>tutorialbracket</servlet-name>
         <url-pattern>/tutorialbracket</url-pattern>
     </servlet-mapping>

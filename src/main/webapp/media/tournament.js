@@ -6,7 +6,6 @@ Ext.define('TournamentModel',{
 	]
 });
 
-var testdata = [['abc'], ['def']];
 var tournament = {
 	createAccordionPanel: function() {
 		// TODO: need grid and stuff
@@ -22,9 +21,16 @@ var tournament = {
 		var store = Ext.create('Ext.data.ArrayStore', {
 		    itemId: 'tournament_store',
 			model: 'TournamentModel',
-			//autoLoad: true,
-			data: testdata,
-			expandData: true
+			autoLoad: true,
+			expandData: true,
+			proxy: {
+	            type: 'ajax',
+	            url : '/tournaments',
+	            reader: {
+	                type: 'json',
+	                root: 'responseJSON'
+	            }
+	        }
 		});
 				
 		var grid = Ext.create('Ext.grid.Panel', {
@@ -36,7 +42,7 @@ var tournament = {
 			],
 			forceFit: true,
 			height:210,
-			margin: '10 10 10 10',
+			//margin: '10 10 10 10',
 			split: true
 		});
 		
