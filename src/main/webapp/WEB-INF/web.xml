@@ -18,6 +18,10 @@
         <servlet-name>bracket</servlet-name>
         <servlet-class>com.google.appengine.demos.bracket.BracketServlet</servlet-class>
     </servlet>
+	<servlet>
+        <servlet-name>tutorialbracket</servlet-name>
+        <servlet-class>com.google.appengine.demos.bracket.TutorialBracketServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>sign</servlet-name>
         <url-pattern>/sign</url-pattern>
@@ -33,6 +37,10 @@
     <servlet-mapping>
         <servlet-name>bracket</servlet-name>
         <url-pattern>/bracket</url-pattern>
+    </servlet-mapping>
+        <servlet-mapping>
+        <servlet-name>tutorialbracket</servlet-name>
+        <url-pattern>/tutorialbracket</url-pattern>
     </servlet-mapping>
     <welcome-file-list>
         <welcome-file>guestbook.jsp</welcome-file>
