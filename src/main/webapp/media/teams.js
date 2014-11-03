@@ -1,21 +1,3 @@
-/*(function() {
-    var cfg = Ext.Loader.getConfig();
-    cfg.enabled = true;
-    Ext.Loader.setConfig(cfg);
-    Ext.Loader.setPath('MyApp', 'media/js');
-    Ext.require([
-	    'Ext.grid.*',
-	    'Ext.data.*',
-	    'Ext.panel.*',
-	    'Ext.layout.container.Border'
-	]);
-    Ext.onReady(function() {
-        Ext.create('MyApp.views.MainContainer');
-        teams.init();
-    });
-})();
-*/
-
 
 Ext.define('TeamModel',{
 	extend: 'Ext.data.Model',

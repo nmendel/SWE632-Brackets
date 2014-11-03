@@ -3,13 +3,19 @@ Ext.define('TournamentModel',{
 	extend: 'Ext.data.Model',
 	fields: [ 
 		{name: 'name'},
+		{name: 'create_date'},
+		{name: 'started', type: 'bool'},
+		{name: 'finished', type: 'bool'}
 	]
 });
 
 var tournament = {
+	panel: null,
+	store: null,
+	grid: null,
+	
 	createAccordionPanel: function() {
-		// TODO: need grid and stuff
-		var container = Ext.create('Ext.panel.Panel', {
+		tournament.panel = Ext.create('Ext.panel.Panel', {
 			id: 'tournament-panel',
             title:'Tournaments',
             autoScroll: true,
@@ -18,27 +24,33 @@ var tournament = {
             items: []
 		});
 		
-		var store = Ext.create('Ext.data.ArrayStore', {
+		tournament.store = Ext.create('Ext.data.Store', {
 		    itemId: 'tournament_store',
 			model: 'TournamentModel',
 			autoLoad: true,
+			autoSync: true,
 			expandData: true,
 			proxy: {
 	            type: 'ajax',
 	            url : '/tournaments',
+                headers: {
+                    Accept: 'application/json'
+                },
 	            reader: {
 	                type: 'json',
-	                root: 'responseJSON'
+	                root: 'responseText'
 	            }
 	        }
 		});
 				
-		var grid = Ext.create('Ext.grid.Panel', {
+		tournament.grid = Ext.create('Ext.grid.Panel', {
 			itemId: 'tournament_grid',
-			store: store,
+			store: tournament.store,
 			columns: [
 				{text: "Tournament Name", width: 120, dataIndex: 'name', sortable: true},
-				//{text: "ELO", flex: 1, dataIndex: 'elo', sortable: true},
+				{text: "Date Created", flex: 1, dataIndex: 'create_date', sortable: true},
+				{text: "Started", flex: 2, dataIndex: 'started', sortable: true},
+				{text: "Finished", flex: 3, dataIndex: 'finished', sortable: true},
 			],
 			forceFit: true,
 			height:210,
@@ -46,8 +58,8 @@ var tournament = {
 			split: true
 		});
 		
-		container.add(grid);
-		return container;
+		tournament.panel.add(tournament.grid);
+		return tournament.panel;
 	},
 	
 	create: function() {
