@@ -33,66 +33,36 @@
 function isTest() {
 	return window.location.protocol === 'file:' && window.location.href.substr(-9) === 'test.html';
 }
-x= null;
-y = null;
 function testMockAjax() {
    	Ext.Ajax.request = function(options) {
    		// options.method, params, url
    		var url = options.url.split("?")[0];
-   		if(x==null) {
-   			console.log(options);
-   			x = 1;
-   		}
-   		
    		var data = [];
    		if(url == '/tournaments') {
+   			console.log("/tournaments");
    			data = [
 	   			Ext.create('TournamentModel', {name: "Head Chef", create_date: "20141031123456"}),
    				Ext.create('TournamentModel', {name: "Big Wigg", create_date: "20141021123456", started: true, finished: true}),
 	  			Ext.create('TournamentModel', {name: "Cat Competition",  create_date: "20141011123456", started: true})
 	  		];
+   		} else if(url == '/teams') {
+   			console.log("/teams");
+   			data = [
+	   			Ext.create('TeamModel', {name: "Randall Flagg"}),
+	   			Ext.create('TeamModel', {name: "Leroy Jenkins"}),
+	  		];
    		} else{
-   			console.log("unrecognized ajax url: " + url);
+   			alert("unrecognized mock ajax url: " + url);
    		}
-
-   		
-   		/*
-        This shit dont work
-   		var request = new MockHttpRequest();
-		request.open("GET", url);
-		request.setRequestHeader("Content-Type", "application/json");
-		request.onload = function () {
-			var json = this.responseText;
-			console.log("Received response: " + this.statusText);
-		    console.log("Response body: " + JSON.stringify(json));
-		    //options.success(this);
-			//options.complete(this);
-			this.jsonData = json;
-			this.responseJSON = json;
-			this.setResponseHeader("Content-Type", "application/json");
-			this.success = true;
-			console.log(this);
-			y = options.callback;
-			options.callback(options, null, this);
-		    //return this;
-		};
-		try {
-			request.send("");
-			request.receive(200, data);
-		} catch(e) {
-			console.log("error: " + e);
-		}
-		*/
 		
-		// This one does
         var me = this;
         options.callback({}, true, data);
         me.fireEvent('requestcomplete');
-        
    	};
     bracket.init();
 }
 
+// This is the main container for the page
 Ext.define('Ext.app.LiveBracket', {
 
     extend: 'Ext.container.Viewport',
@@ -148,9 +118,9 @@ Ext.define('Ext.app.LiveBracket', {
                     title: 'Manage',
                     region: 'east',
                     animCollapse: true,
-                    width: 200,
+                    width: 420,
                     minWidth: 150,
-                    maxWidth: 400,
+                    maxWidth: 700,
                     split: true,
                     collapsible: true,
                     layout:{
@@ -174,8 +144,8 @@ var bracket = {
 	init: function() {
 		// Put items into the accordion panel
 		var accordion = Ext.getCmp('app-accordion');
-		accordion.add(tournament.createAccordionPanel());
-		accordion.add(teams.createAccordionPanel());
+		accordion.add(tournament.panel.create());
+		accordion.add(team.panel.create());
 		
 		// TODO: Add the create tournament form, hidden
 		
@@ -183,3 +153,31 @@ var bracket = {
 		// TODO: Add the bracket container
 	}
 };
+
+
+function postData(url, data, successFunc, errorFunc, alternateType) {
+	var type = "POST";
+	if(alternateType) {
+		type = alternateType;
+	}
+	$.ajax({
+		type : type,
+		url : url,
+		data : JSON.stringify(data),
+		contentType : "application/json",
+		accepts : "application/json",
+		dataType : "json",
+		success : successFunc,
+		error : errorFunc,
+	});
+	return false;
+}
+function get(url, success, error, complete) {
+	$.ajax({
+		type : "GET",
+		url : url,
+		success: success,
+		error: error,
+		complete: complete
+	});
+}

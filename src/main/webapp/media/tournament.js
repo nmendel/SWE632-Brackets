@@ -1,4 +1,6 @@
 
+// TODO: make date format nice, make started and finished check boxes
+
 Ext.define('TournamentModel',{
 	extend: 'Ext.data.Model',
 	fields: [ 
@@ -10,59 +12,108 @@ Ext.define('TournamentModel',{
 });
 
 var tournament = {
-	panel: null,
-	store: null,
-	grid: null,
+	panel: {
+		object: null,
+		
+		create: function() {
+			tournament.panel.object = Ext.create('Ext.panel.Panel', {
+				id: 'tournament-panel',
+	            title:'Tournaments',
+	            autoScroll: true,
+	            border: false,
+	            iconCls: 'nav',
+	            items: []
+			});
+			
+			var store = tournament.store.create();
+			tournament.grid.create(store);
+			tournament.panel.object.add(tournament.grid.object);
+			return tournament.panel.object;
+		}
+	}, 
 	
-	createAccordionPanel: function() {
-		tournament.panel = Ext.create('Ext.panel.Panel', {
-			id: 'tournament-panel',
-            title:'Tournaments',
-            autoScroll: true,
-            border: false,
-            iconCls: 'nav',
-            items: []
-		});
+	store: {
+		object: null,
 		
-		tournament.store = Ext.create('Ext.data.Store', {
-		    itemId: 'tournament_store',
-			model: 'TournamentModel',
-			autoLoad: true,
-			autoSync: true,
-			expandData: true,
-			proxy: {
-	            type: 'ajax',
-	            url : '/tournaments',
-                headers: {
-                    Accept: 'application/json'
-                },
-	            reader: {
-	                type: 'json',
-	                root: 'responseText'
-	            }
-	        }
-		});
-				
-		tournament.grid = Ext.create('Ext.grid.Panel', {
-			itemId: 'tournament_grid',
-			store: tournament.store,
-			columns: [
-				{text: "Tournament Name", width: 120, dataIndex: 'name', sortable: true},
-				{text: "Date Created", flex: 1, dataIndex: 'create_date', sortable: true},
-				{text: "Started", flex: 2, dataIndex: 'started', sortable: true},
-				{text: "Finished", flex: 3, dataIndex: 'finished', sortable: true},
-			],
-			forceFit: true,
-			height:210,
-			//margin: '10 10 10 10',
-			split: true
-		});
+		create: function() {
+			tournament.store.object = Ext.create('Ext.data.Store', {
+			    itemId: 'tournament_store',
+				model: 'TournamentModel',
+				autoLoad: true,
+				autoSync: true,
+				expandData: true,
+				proxy: {
+		            type: 'ajax',
+		            url : '/tournaments',
+	                headers: {
+	                    Accept: 'application/json'
+	                },
+		            reader: {
+		                type: 'json',
+		                root: 'responseText'
+		            }
+		        }
+			});
+			return tournament.store.object;
+		}
+	},
+	
+	grid: {
+		object: null,
 		
-		tournament.panel.add(tournament.grid);
-		return tournament.panel;
+		create: function(store) {
+			tournament.grid.object = Ext.create('Ext.grid.Panel', {
+				itemId: 'tournament_grid',
+				store: store,
+				columns: [{
+					text: "Tournament Name",
+					width: 140,
+					dataIndex: 'name',
+					sortable: true
+				},{
+					text: "Date Created",
+					width: 106,
+					dataIndex: 'create_date',
+					sortable: true
+				},{
+					xtype: 'checkcolumn',
+					text: "Started",
+					width: 70,
+					dataIndex: 'started',
+					sortable: true
+				},{
+					xtype: 'checkcolumn',
+					text: "Finished",
+					width: 70,
+					dataIndex: 'finished',
+					sortable: true
+				},{
+	                text : 'tournament_id',
+	                dataIndex : 'id',
+	                hidden : true
+	            }],
+				forceFit: true,
+				//height:210,
+				split: true,
+	            viewConfig : {
+	                stripeRows : true
+	            },
+				listeners : {
+	                select : tournament.grid.onSelect,
+	                // itemcontextmenu : 
+	                // itemdblclick :
+	                // afterrender : 
+	            },
+			});
+			return tournament.grid.object;
+		},
+		
+		onSelect: function() {
+			console.log("select");
+		}
 	},
 	
 	create: function() {
 		console.log("new tournament");	
-	},
+	}
 };
