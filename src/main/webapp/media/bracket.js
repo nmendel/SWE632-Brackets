@@ -24,43 +24,24 @@
         if(!isTest()) {
         	bracket.init();
         } else {
-        	testMockAjax();
+        	test.MockAjax();
         }
     });
 })();
 
-// Determine if this is a local test so we can mock ajax if necessary
-function isTest() {
-	return window.location.protocol === 'file:' && window.location.href.substr(-9) === 'test.html';
-}
-function testMockAjax() {
-   	Ext.Ajax.request = function(options) {
-   		// options.method, params, url
-   		var url = options.url.split("?")[0];
-   		var data = [];
-   		if(url == '/tournaments') {
-   			console.log("/tournaments");
-   			data = [
-	   			Ext.create('TournamentModel', {name: "Head Chef", create_date: "20141031123456"}),
-   				Ext.create('TournamentModel', {name: "Big Wigg", create_date: "20141021123456", started: true, finished: true}),
-	  			Ext.create('TournamentModel', {name: "Cat Competition",  create_date: "20141011123456", started: true})
-	  		];
-   		} else if(url == '/teams') {
-   			console.log("/teams");
-   			data = [
-	   			Ext.create('TeamModel', {name: "Randall Flagg"}),
-	   			Ext.create('TeamModel', {name: "Leroy Jenkins"}),
-	  		];
-   		} else{
-   			alert("unrecognized mock ajax url: " + url);
-   		}
+var bracket = {
+	init: function() {
+		// Put items into the accordion panel
+		var accordion = Ext.getCmp('app-accordion');
+		accordion.add(tournament.panel.create());
+		accordion.add(team.panel.create());
 		
-        var me = this;
-        options.callback({}, true, data);
-        me.fireEvent('requestcomplete');
-   	};
-    bracket.init();
-}
+		// TODO: Add the create tournament form, hidden
+		
+		
+		// TODO: Add the bracket container
+	}
+};
 
 // This is the main container for the page
 Ext.define('Ext.app.LiveBracket', {
@@ -140,20 +121,19 @@ Ext.define('Ext.app.LiveBracket', {
     }
 });
 
-var bracket = {
-	init: function() {
-		// Put items into the accordion panel
-		var accordion = Ext.getCmp('app-accordion');
-		accordion.add(tournament.panel.create());
-		accordion.add(team.panel.create());
-		
-		// TODO: Add the create tournament form, hidden
-		
-		
-		// TODO: Add the bracket container
-	}
-};
+function formatDate(dateStr) {
+	var year = dateStr.substr(0, 4);
+	var mon = dateStr.substr(4, 2) ;
+	var day = dateStr.substr(6, 2);
+	console.log(dateStr);
+	
+	return mon + '/' + day + '/' + year;
+}
 
+// Determine if this is a local test so we can mock ajax if necessary
+function isTest() {
+	return window.location.protocol === 'file:' && window.location.href.substr(-9) === 'test.html';
+}
 
 function postData(url, data, successFunc, errorFunc, alternateType) {
 	var type = "POST";

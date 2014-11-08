@@ -41,6 +41,12 @@ body {
 .info {
     background-image:url(../ext-4.2.1/icons/fam/information.png);
 }
+.team-add {
+    background-image:url(../ext-4.2.1/icons/fam/user_add.png);
+}
+.team-remove {
+    background-image:url(../ext-4.2.1/icons/fam/user_delete.png);
+}
 
 #logo {
     width: 55px;
@@ -55,7 +61,6 @@ body {
     height: 61px;
     top: -15px;
     left: -10px;
-
 }
 
 .logo-text {

@@ -1,8 +1,10 @@
+// TODO: make updating a row save to the db
 
 Ext.define('TeamModel',{
 	extend: 'Ext.data.Model',
 	fields: [ 
 		{name: 'name'},
+		{name: 'location'}
 	]
 });
 
@@ -55,8 +57,14 @@ var team = {
 	
 	grid: {
 		object: null,
+		rowEditing: null,
 		
 		create: function(store) {
+		    team.grid.rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
+    		    clicksToMoveEditor: 1,
+        		autoCancel: false
+    		});
+    		
 			team.grid.object = Ext.create('Ext.grid.Panel', {
 				itemId: 'team_grid',
 				store: store,
@@ -64,7 +72,18 @@ var team = {
 					text: "Team Name",
 					width: 140,
 					dataIndex: 'name',
-					sortable: true
+					sortable: true,
+		            editor: {
+		                allowBlank: false
+        		    }
+				},{
+					text: "Location",
+					width: 140,
+					dataIndex: 'location',
+					sortable: true,
+		            editor: {
+		                allowBlank: true
+        		    }
 				},{
 	                text : 'team_id',
 	                dataIndex : 'id',
@@ -76,8 +95,23 @@ var team = {
 	            viewConfig : {
 	                stripeRows : true
 	            },
+	            plugins: [team.grid.rowEditing],
+                tbar: [{
+		            text: 'Add Team',
+		            iconCls: 'team-add',
+		            handler : team.grid.addTeam,
+		        },{
+		            itemId: 'removeTeam',
+		            text: 'Remove Team',
+		            iconCls: 'team-remove',
+		            handler: team.grid.removeTeam,
+		            disabled: true
+		        }],
 				listeners : {
-	                select : team.grid.onSelect,
+		            selectionchange: function(view, records) {
+                		team.grid.object.down('#removeTeam').setDisabled(!records.length);
+            		},
+	                // select :
 	                // itemcontextmenu : 
 	                // itemdblclick :
 	                // afterrender : 
@@ -86,8 +120,37 @@ var team = {
 			return team.grid.object;
 		},
 		
-		onSelect: function() {
-			console.log("select");
-		}
+		addTeam: function() {
+			var store = team.grid.object.getStore();
+            team.grid.rowEditing.cancelEdit();
+
+            // Create a model instance
+            var r = Ext.create('TeamModel', {
+                name: 'New Guy',
+                location: 'Downtown'
+            });
+
+			// TODO: needs to be implemented, make ajax call and update store/grid
+            store.insert(0, r);
+            test.teams.push(r);
+            console.log(test.teams[0].data);
+            // \TODO
+            
+            team.grid.rowEditing.startEdit(0, 0);
+       },
+       
+        removeTeam: function() {
+        	var store = team.grid.object.getStore();
+            var sm = team.grid.object.getSelectionModel();
+            team.grid.rowEditing.cancelEdit();
+            
+            // TODO: needs to be implemented, make ajax call and update store/grid
+            store.remove(sm.getSelection());
+            // \TODO
+            
+            if (store.getCount() > 0) {
+                sm.select(0);
+            }
+        }
 	}
 };

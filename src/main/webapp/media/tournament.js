@@ -1,5 +1,5 @@
 
-// TODO: make date format nice, make started and finished check boxes
+// TODO: make date format nice, make started and finished check boxes work correctly
 
 Ext.define('TournamentModel',{
 	extend: 'Ext.data.Model',
@@ -72,21 +72,24 @@ var tournament = {
 					sortable: true
 				},{
 					text: "Date Created",
-					width: 106,
+					width: 100,
 					dataIndex: 'create_date',
-					sortable: true
+					sortable: true,
+					renderer: formatDate
 				},{
 					xtype: 'checkcolumn',
 					text: "Started",
 					width: 70,
 					dataIndex: 'started',
-					sortable: true
+					sortable: true,
+					processEvent: function () { return false; } // set editable to false
 				},{
 					xtype: 'checkcolumn',
 					text: "Finished",
 					width: 70,
 					dataIndex: 'finished',
-					sortable: true
+					sortable: true,
+					processEvent: function () { return false; } // set editable to false
 				},{
 	                text : 'tournament_id',
 	                dataIndex : 'id',
