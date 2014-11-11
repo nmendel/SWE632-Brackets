@@ -13,18 +13,17 @@ public class TeamServlet extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
+        String tournament = req.getParameter(Constants.TOURNAMENT_NAME);
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-
-        String tournament = "tourney1"; //req.getParameter(Constants.TOURNAMENT_NAME);
         Key tournamentKey = KeyFactory.createKey(Constants.TOURNAMENT_KEY, tournament);
-
-        testCode(datastore, tournamentKey);
 
         StringBuffer json = new StringBuffer();
         for (Entity entity : getTeams(datastore, tournamentKey)) {
             json.append("{\"")
                 .append(Constants.TEAM_NAME).append("\":\"")
                 .append(entity.getProperty(Constants.TEAM_NAME)).append("\", \"")
+                .append(Constants.TEAM_TOURNAMENT).append("\":\"")
+                .append(entity.getProperty(Constants.TEAM_TOURNAMENT)).append("\", \"")
                 .append(Constants.TEAM_SCORE).append("\":\"")
                 .append(entity.getProperty(Constants.TEAM_SCORE)).append("\"},\n");
         }
@@ -48,11 +47,13 @@ public class TeamServlet extends HttpServlet {
     public void testCode(DatastoreService datastore, Key key) {
         Entity team0 = new Entity(Constants.TEAM_KEY, key);
         team0.setProperty(Constants.TEAM_NAME, "name1");
+        team0.setProperty(Constants.TEAM_TOURNAMENT, "tourney1");
         team0.setProperty(Constants.TEAM_SCORE, "23");
         datastore.put(team0);
 
         Entity team1 = new Entity(Constants.TEAM_KEY, key);
         team1.setProperty(Constants.TEAM_NAME, "name2");
+        team1.setProperty(Constants.TEAM_TOURNAMENT, "tourney1");
         team1.setProperty(Constants.TEAM_SCORE, "20");
         datastore.put(team1);
     }

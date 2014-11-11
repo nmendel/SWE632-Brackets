@@ -15,14 +15,11 @@ public class TournamentServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-
-        String bracketName = Constants.BRACKET_KEY;
-        Key bracketKey = KeyFactory.createKey(Constants.BRACKET_KEY, bracketName);
-
-        testCode(datastore, bracketKey);
+        Key bracketKey = KeyFactory.createKey(Constants.BRACKET_KEY, Constants.BRACKET_KEY);
+        List <Entity> entities = getTournaments(datastore, bracketKey);
 
         StringBuffer json = new StringBuffer();
-        for (Entity entity : getTournaments(datastore, bracketKey)) {
+        for (Entity entity : entities) {
             json.append("{\"")
                 .append(Constants.TOURNAMENT_NAME).append("\":\"")
                 .append(entity.getProperty(Constants.TOURNAMENT_NAME)).append("\", \"")
@@ -47,8 +44,8 @@ public class TournamentServlet extends HttpServlet {
     }
 
     public List<Entity> getTournaments(DatastoreService datastore, Key key) {
-        Query query = new Query(Constants.TEAM_KEY, key)
-                .addSort(Constants.TEAM_NAME, Query.SortDirection.DESCENDING);
+        Query query = new Query(Constants.TOURNAMENT_KEY, key)
+                .addSort(Constants.TOURNAMENT_START, Query.SortDirection.DESCENDING);
         return datastore.prepare(query).asList(FetchOptions.Builder.withDefaults());
     }
 

@@ -12,9 +12,10 @@ public class Constants {
     public static final String TOURNAMENT_START = "t_start";
     public static final String TOURNAMENT_END = "t_end";
 
-    public static final String NUM_TEAMS = "number_of_team";
+    public static final String NUM_TEAMS = "teams";
 
     public static final String TEAM_KEY = "team";
+    public static final String TEAM_TOURNAMENT = "team_tournament";
     public static final String TEAM_NAME = "team_name";
     public static final String TEAM_SCORE = "team_score";
 }

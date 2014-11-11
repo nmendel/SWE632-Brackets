@@ -1,10 +1,6 @@
 package com.google.appengine.demos.bracket;
 
-import com.google.appengine.api.datastore.DatastoreService;
-import com.google.appengine.api.datastore.DatastoreServiceFactory;
-import com.google.appengine.api.datastore.Entity;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.datastore.*;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
@@ -25,32 +21,41 @@ public class CreateTeamServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        UserService userService = UserServiceFactory.getUserService();
-        User user = userService.getCurrentUser();
-
-        String tournamentName = req.getParameter("tournamentName");
-        Key tournamentKey = KeyFactory.createKey("Tournament", tournamentName);
-        String content = req.getParameter("content");
-        Date date = new Date();
-        Entity team = new Entity("Team", tournamentKey);
-        team.setProperty("user", user);
-        team.setProperty("date", date);
-        team.setProperty("content", content);
+        String tournamentName = req.getParameter(Constants.TOURNAMENT_NAME);
+        String teamName = req.getParameter(Constants.TEAM_NAME);
+        String teamScore = req.getParameter(Constants.TEAM_SCORE);
 
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        Key tournamentKey = KeyFactory.createKey(Constants.TOURNAMENT_KEY, tournamentName);
+
+        Entity team = new Entity(Constants.TEAM_KEY, tournamentKey);
+        team.setProperty(Constants.TEAM_NAME, teamName);
+        team.setProperty(Constants.TEAM_TOURNAMENT, tournamentName);
+        team.setProperty(Constants.TEAM_SCORE, teamScore);
         datastore.put(team);
 
-        String responseMsg = "Test test test";
-
         resp.setContentType("application/json");
-        resp.setContentLength(responseMsg.length());
-        resp.getWriter().write(responseMsg); // write JSON string
-        resp.getWriter().flush();
-        resp.getWriter().close();
+        resp.getWriter().write(team.toString());
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         doPost(request,response);
+    }
+
+    public void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        String tournamentName = req.getParameter(Constants.TOURNAMENT_NAME);
+        String teamName = req.getParameter(Constants.TEAM_NAME);
+        String teamScore = req.getParameter(Constants.TEAM_SCORE);
+
+        Query query = new Query(Constants.TEAM_KEY);
+        query.setFilter(Query.FilterOperator.EQUAL.of(Constants.TOURNAMENT_NAME, tournamentName));
+        query.setFilter(Query.FilterOperator.EQUAL.of(Constants.TEAM_NAME, teamName));
+
+        PreparedQuery pq = datastore.prepare(query);
+        Entity entity = pq.asSingleEntity();
+        entity.setProperty(Constants.TEAM_SCORE, teamScore);
+        datastore.put(entity);
     }
 
     public static void main(String[] args) {
