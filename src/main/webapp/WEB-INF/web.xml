@@ -2,16 +2,8 @@
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-    <servlet>
-        <servlet-name>sign</servlet-name>
-        <servlet-class>com.google.appengine.demos.guestbook.SignGuestbookServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>guestbook</servlet-name>
-        <servlet-class>com.google.appengine.demos.guestbook.GuestbookServlet</servlet-class>
-    </servlet>
 	<servlet>
-        <servlet-name>create</servlet-name>
+        <servlet-name>createTeam</servlet-name>
         <servlet-class>com.google.appengine.demos.bracket.CreateTeamServlet</servlet-class>
     </servlet>
 	<servlet>
@@ -26,21 +18,9 @@
         <servlet-name>teams</servlet-name>
         <servlet-class>com.google.appengine.demos.bracket.TeamServlet</servlet-class>
     </servlet>
-	<servlet>
-        <servlet-name>tutorialbracket</servlet-name>
-        <servlet-class>com.google.appengine.demos.bracket.TutorialBracketServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>sign</servlet-name>
-        <url-pattern>/sign</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>guestbook</servlet-name>
-        <url-pattern>/guestbook</url-pattern>
-    </servlet-mapping>
 	    <servlet-mapping>
-        <servlet-name>create</servlet-name>
-        <url-pattern>/create</url-pattern>
+        <servlet-name>createTeam</servlet-name>
+        <url-pattern>/createTeam</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>teams</servlet-name>
@@ -54,13 +34,4 @@
         <servlet-name>createTournament</servlet-name>
         <url-pattern>/createTournament</url-pattern>
     </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>tutorialbracket</servlet-name>
-        <url-pattern>/tutorialbracket</url-pattern>
-    </servlet-mapping>
-    <welcome-file-list>
-        <welcome-file>guestbook.jsp</welcome-file>
-		<welcome-file>bracket.jsp</welcome-file>
-		<welcome-file>teams.jsp</welcome-file>
-    </welcome-file-list>
 </web-app>

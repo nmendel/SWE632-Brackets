@@ -3,8 +3,8 @@
 Ext.define('TeamModel',{
 	extend: 'Ext.data.Model',
 	fields: [ 
-		{name: 'name'},
-		{name: 'location'}
+		{name: 'team_name'},
+		{name: 'team_location'}
 	]
 });
 
@@ -49,7 +49,13 @@ var team = {
 		                type: 'json',
 		                root: 'responseText'
 		            }
-		        }
+		       },
+   		       filters: [
+  			  		function(item) {
+  			  			var name = item.get('team_name');
+        				return name !== '' && name !== 'null';
+    				}
+				]
 			});
 			return team.store.object;
 		}
@@ -71,22 +77,22 @@ var team = {
 				columns: [{
 					text: "Team Name",
 					width: 140,
-					dataIndex: 'name',
+					dataIndex: 'team_name',
 					sortable: true,
 		            editor: {
-		                allowBlank: false
+		                allowBlank: true
         		    }
 				},{
 					text: "Location",
 					width: 140,
-					dataIndex: 'location',
+					dataIndex: 'team_location',
 					sortable: true,
 		            editor: {
 		                allowBlank: true
         		    }
 				},{
 	                text : 'team_id',
-	                dataIndex : 'id',
+	                dataIndex : 'team_id',
 	                hidden : true
 	            }],
 				forceFit: true,
@@ -125,17 +131,15 @@ var team = {
             team.grid.rowEditing.cancelEdit();
 
             // Create a model instance
-            var r = Ext.create('TeamModel', {
-                name: 'New Guy',
-                location: 'Downtown'
+             var r = Ext.create('TeamModel', {
+                name: 'New Team',
+                location: 'GMU'
             });
-
-			// TODO: needs to be implemented, make ajax call and update store/grid
-            store.insert(0, r);
-            test.teams.push(r);
-            console.log(test.teams[0].data);
-            // \TODO
             
+            store.insert(0, r);
+            
+           	//postData("createTeam?team_name=team2&team_location=Alaska", {})
+            console.log("addTeamm");
             team.grid.rowEditing.startEdit(0, 0);
        },
        

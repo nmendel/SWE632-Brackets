@@ -21,17 +21,22 @@ public class CreateTeamServlet extends HttpServlet {
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        String tournamentName = req.getParameter(Constants.TOURNAMENT_NAME);
         String teamName = req.getParameter(Constants.TEAM_NAME);
         String teamScore = req.getParameter(Constants.TEAM_SCORE);
+        String teamLocation = req.getParameter(Constants.TEAM_LOCATION);
 
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        Key tournamentKey = KeyFactory.createKey(Constants.TOURNAMENT_KEY, tournamentName);
 
-        Entity team = new Entity(Constants.TEAM_KEY, tournamentKey);
+        Entity team = new Entity(Constants.TEAM_KEY);
         team.setProperty(Constants.TEAM_NAME, teamName);
-        team.setProperty(Constants.TEAM_TOURNAMENT, tournamentName);
-        team.setProperty(Constants.TEAM_SCORE, teamScore);
+        
+        if(teamScore != null) {
+        	team.setProperty(Constants.TEAM_SCORE, teamScore);
+        }
+        if(teamLocation != null) {
+        	team.setProperty(Constants.TEAM_LOCATION, teamLocation);
+        }
+        
         datastore.put(team);
 
         resp.setContentType("application/json");

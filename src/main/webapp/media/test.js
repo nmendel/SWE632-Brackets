@@ -8,9 +8,9 @@ var test = {
 	],
 	
 	teams: [
-		Ext.create('TeamModel', {name: "Randall Flagg", location: "Midworld"}),
-		Ext.create('TeamModel', {name: "Leroy Jenkins", location: "Burbank, Australia"}),
-		Ext.create('TeamModel', {name: "Oliver Queen", location: "Starling City"}),
+		{team_name: "Randall Flagg", team_location: "Midworld"},
+		{team_name: "Leroy Jenkins", team_location: "Burbank, Australia"},
+		{team_name: "Oliver Queen", team_location: "Starling City"}
 	],
 	
 	MockAjax: function() {
