@@ -1,9 +1,12 @@
 package com.google.appengine.demos.bracket;
 
 import com.google.appengine.api.datastore.*;
+import com.google.gson.Gson;
+import com.google.appengine.demos.bracket.Team;
 
 import java.io.IOException;
 import java.util.List;
+import java.io.BufferedReader;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -89,26 +92,31 @@ public class TeamServlet extends HttpServlet {
     
     public void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
-        String teamName = req.getParameter(Constants.TEAM_NAME);
-        String teamScore = req.getParameter(Constants.TEAM_SCORE);
-        String teamLocation = req.getParameter(Constants.TEAM_LOCATION);
-
+		BufferedReader reader = req.getReader(); 
+		String json = reader.readLine();
+		
+		Gson gson = new Gson();
+		Team team = gson.fromJson(json, Team.class);  
+		
+		System.out.println(json);
+		System.out.println(team.team_name);
+		System.out.println(team.team_location);
+		System.out.println(team.team_score);
+		
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        Entity teamEnt = new Entity(Constants.TEAM_KEY);
 
-        Entity team = new Entity(Constants.TEAM_KEY);
-        team.setProperty(Constants.TEAM_NAME, teamName);
-        
-        if(teamScore != null) {
-        	team.setProperty(Constants.TEAM_SCORE, teamScore);
-        }
-        if(teamLocation != null) {
-        	team.setProperty(Constants.TEAM_LOCATION, teamLocation);
+        teamEnt.setProperty(Constants.TEAM_NAME, team.team_name);
+       	teamEnt.setProperty(Constants.TEAM_SCORE, team.team_score);
+
+        if(team.team_location != null) {
+        	teamEnt.setProperty(Constants.TEAM_LOCATION, team.team_location);
         }
         
-        datastore.put(team);
-
+        datastore.put(teamEnt);
+				
         resp.setContentType("application/json");
-        resp.getWriter().write(team.toString());
+        resp.getWriter().write(json);
     }
 
 }
