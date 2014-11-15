@@ -4,14 +4,19 @@
 Ext.define('TournamentModel',{
 	extend: 'Ext.data.Model',
 	fields: [ 
-		{name: 'name'},
-		{name: 'create_date'},
-		{name: 'started', type: 'bool'},
-		{name: 'finished', type: 'bool'}
+		{name: 't_name'},
+		{name: 't_size'},
+		{name: 't_format'},
+		{name: 't_create'},
+		{name: 't_start', type: 'bool'},
+		{name: 't_end', type: 'bool'}
 	]
 });
 
 var tournament = {
+	teams: null,
+	results: null,
+	
 	panel: {
 		object: null,
 		
@@ -50,7 +55,6 @@ var tournament = {
 	                },
 		            reader: {
 		                type: 'json',
-		                root: 'responseText'
 		            }
 		        }
 			});
@@ -68,26 +72,37 @@ var tournament = {
 				columns: [{
 					text: "Tournament Name",
 					width: 140,
-					dataIndex: 'name',
+					dataIndex: 't_name',
+					sortable: true
+				},{
+					text: "Format",
+					width: 70,
+					dataIndex: 't_format',
+					sortable: true,
+					hidden: true
+				},{
+					text: "Size",
+					width: 50,
+					dataIndex: 't_size',
 					sortable: true
 				},{
 					text: "Date Created",
 					width: 100,
-					dataIndex: 'create_date',
+					dataIndex: 't_create',
 					sortable: true,
 					renderer: formatDate
 				},{
 					xtype: 'checkcolumn',
 					text: "Started",
 					width: 70,
-					dataIndex: 'started',
+					dataIndex: 't_start',
 					sortable: true,
 					processEvent: function () { return false; } // set editable to false
 				},{
 					xtype: 'checkcolumn',
 					text: "Finished",
 					width: 70,
-					dataIndex: 'finished',
+					dataIndex: 't_end',
 					sortable: true,
 					processEvent: function () { return false; } // set editable to false
 				},{
@@ -114,9 +129,5 @@ var tournament = {
 		onSelect: function() {
 			console.log("select");
 		}
-	},
-	
-	create: function() {
-		console.log("new tournament");	
 	}
 };

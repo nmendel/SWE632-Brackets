@@ -18,6 +18,7 @@ public class TeamServlet extends HttpServlet {
         Key tournamentKey = KeyFactory.createKey(Constants.TOURNAMENT_KEY, tournament);
 
         StringBuffer json = new StringBuffer();
+        json.append("[");
         for (Entity entity : getTeams(datastore, tournamentKey)) {
             json.append("{\"")
                 .append(Constants.TEAM_NAME).append("\":\"")
@@ -28,9 +29,9 @@ public class TeamServlet extends HttpServlet {
                 .append(entity.getProperty(Constants.TEAM_SCORE)).append("\"},\n");
         }
 
-        String str = "";
+        String str = "[]";
         if (json.length() - 2 >= 0) {
-            str = json.toString().substring(0, json.length() - 2);
+            str = json.toString().substring(0, json.length() - 2) + "]";
         }
 
         resp.addHeader("Access-Control-Allow-Origin", "*");

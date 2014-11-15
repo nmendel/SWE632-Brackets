@@ -19,23 +19,26 @@ public class TournamentServlet extends HttpServlet {
         List <Entity> entities = getTournaments(datastore, bracketKey);
 
         StringBuffer json = new StringBuffer();
+        json.append("[");
         for (Entity entity : entities) {
             json.append("{\"")
                 .append(Constants.TOURNAMENT_NAME).append("\":\"")
                 .append(entity.getProperty(Constants.TOURNAMENT_NAME)).append("\", \"")
                 .append(Constants.TOURNAMENT_FORMAT).append("\":\"")
                 .append(entity.getProperty(Constants.TOURNAMENT_FORMAT)).append("\", \"")
-                .append(Constants.NUM_TEAMS).append("\":\"")
-                .append(entity.getProperty(Constants.NUM_TEAMS)).append("\", \"")
+                .append(Constants.TOURNAMENT_SIZE).append("\":\"")
+                .append(entity.getProperty(Constants.TOURNAMENT_SIZE)).append("\", \"")
+                .append(Constants.TOURNAMENT_CREATEDATE).append("\":\"")
+                .append(entity.getProperty(Constants.TOURNAMENT_CREATEDATE)).append("\", \"")
                 .append(Constants.TOURNAMENT_START).append("\":\"")
                 .append(entity.getProperty(Constants.TOURNAMENT_START)).append("\", \"")
                 .append(Constants.TOURNAMENT_END).append("\":\"")
                 .append(entity.getProperty(Constants.TOURNAMENT_END)).append("\"},\n");
         }
 
-        String str = "";
+        String str = "[]";
         if (json.length() - 2 >= 0) {
-            str = json.toString().substring(0, json.length() - 2);
+            str = json.toString().substring(0, json.length() - 2) + "]";
         }
 
         resp.addHeader("Access-Control-Allow-Origin", "*");
@@ -54,7 +57,7 @@ public class TournamentServlet extends HttpServlet {
         Entity tourn = new Entity(Constants.TOURNAMENT_KEY, key);
         tourn.setProperty(Constants.TOURNAMENT_NAME, "B-BALL");
         tourn.setProperty(Constants.TOURNAMENT_FORMAT, "Single Elimination");
-        tourn.setProperty(Constants.NUM_TEAMS, 16);
+        tourn.setProperty(Constants.TOURNAMENT_SIZE, 16);
         tourn.setProperty(Constants.TOURNAMENT_START, date);
         tourn.setProperty(Constants.TOURNAMENT_END, null);
         datastore.put(tourn);
@@ -62,7 +65,7 @@ public class TournamentServlet extends HttpServlet {
         Entity tourn0 = new Entity(Constants.TOURNAMENT_KEY, key);
         tourn0.setProperty(Constants.TOURNAMENT_NAME, "B-BALL-2");
         tourn0.setProperty(Constants.TOURNAMENT_FORMAT, "Single Elimination");
-        tourn0.setProperty(Constants.NUM_TEAMS, 16);
+        tourn0.setProperty(Constants.TOURNAMENT_SIZE, 16);
         tourn0.setProperty(Constants.TOURNAMENT_START, date);
         tourn0.setProperty(Constants.TOURNAMENT_END, null);
         datastore.put(tourn0);

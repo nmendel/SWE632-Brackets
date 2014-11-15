@@ -1,9 +1,10 @@
 
 var test = {
 	tournaments: [
-		Ext.create('TournamentModel', {name: "Head Chef", create_date: "20141031123456"}),
-		Ext.create('TournamentModel', {name: "Big Wigg", create_date: "20141021123456", started: true, finished: true}),
-		Ext.create('TournamentModel', {name: "Cat Competition",  create_date: "20141011123456", started: true})
+		{t_name: "Head Chef", t_format: 'Single Elimination', t_size: 64, t_start: "20141031123456"},
+		{t_name: "Big Wigg", t_format: 'Single Elimination', t_size: 8, t_create: "20141021123456", t_start: true, t_end: true},
+		{t_name: "Cat Competition", t_format: 'Single Elimination', t_size: 16, t_create: "20141011123456", t_start: true}
+
 	],
 	
 	teams: [
@@ -31,6 +32,6 @@ var test = {
 	        options.callback({}, true, data);
 	        me.fireEvent('requestcomplete');
 	   	};
-	    bracket.init();
+	    init();
 	}
 };
