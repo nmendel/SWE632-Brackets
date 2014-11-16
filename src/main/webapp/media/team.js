@@ -2,9 +2,11 @@
 
 Ext.define('TeamModel',{
 	extend: 'Ext.data.Model',
-	fields: [ 
+	fields: [
+		{name: 'team_id'}, 
 		{name: 'team_name'},
-		{name: 'team_location'}
+		{name: 'team_location'},
+		{name: 'team_active'}
 	]
 });
 
@@ -48,12 +50,19 @@ var team = {
 		            reader: {
 		                type: 'json',
 		                root: 'responseText'
+		            },
+		            listeners: {
+		            	add: function() {console.log("add");},
+		            	load: function() {console.log("load");},
+		            	update: function() {console.log("update");},
+		            	write: function() {console.log("write");}
 		            }
 		       },
    		       filters: [
   			  		function(item) {
   			  			var name = item.get('team_name');
-        				return name !== '' && name !== 'null';
+  			  			var active = item.get('team_active');
+        				return name !== '' && name !== 'null' && active == '1';
     				}
 				]
 			});
@@ -68,7 +77,21 @@ var team = {
 		create: function(store) {
 		    team.grid.rowEditing = Ext.create('Ext.grid.plugin.RowEditing', {
     		    clicksToMoveEditor: 1,
-        		autoCancel: false
+        		autoCancel: false,
+        		listeners: {
+        			canceledit: function(rowEd, row) {
+        				if(row.record.data.team_name == "") {
+        					row.store.remove(row.rowIdx);
+        					row.store.reload();
+        				}
+        			},
+        			edit: function(rowEd, row) {
+        				console.log("edit");
+        			},
+        			beforeedit: function(rowEd, row) {
+        				console.log("beforeedit");
+        			}
+        		}
     		});
     		
 			team.grid.object = Ext.create('Ext.grid.Panel', {
@@ -92,7 +115,7 @@ var team = {
         		    }
 				},{
 	                text : 'team_id',
-	                dataIndex : 'team_id',
+	                dataIndex: 'team_id',
 	                hidden : true
 	            }],
 				forceFit: true,
@@ -137,9 +160,6 @@ var team = {
             });
             
             store.insert(0, r);
-            
-           	//postData("createTeam?team_name=team2&team_location=Alaska", {})
-            console.log("addTeamm");
             team.grid.rowEditing.startEdit(0, 0);
        },
        
@@ -149,6 +169,7 @@ var team = {
             team.grid.rowEditing.cancelEdit();
             
             // TODO: needs to be implemented, make ajax call and update store/grid
+            
             store.remove(sm.getSelection());
             // \TODO
             

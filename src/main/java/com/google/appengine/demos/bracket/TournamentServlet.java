@@ -7,6 +7,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.Date;
 import java.util.List;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -47,6 +49,31 @@ public class TournamentServlet extends HttpServlet {
         resp.addHeader("Access-Control-Allow-Origin", "*");
         resp.setContentType("application/json");
         resp.getWriter().write(str);
+    }
+    
+    @Override
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String name = req.getParameter(Constants.TOURNAMENT_NAME);
+        String format = req.getParameter(Constants.TOURNAMENT_FORMAT);
+        String numTeams = req.getParameter(Constants.TOURNAMENT_SIZE);
+        
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        Key key = KeyFactory.createKey(Constants.BRACKET_KEY, Constants.BRACKET_KEY);
+        
+		DateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
+		Date today = new Date();
+		String date = df.format(today);
+
+        Entity entity = new Entity(Constants.TOURNAMENT_KEY, key);
+        entity.setProperty(Constants.TOURNAMENT_NAME, name);
+        entity.setProperty(Constants.TOURNAMENT_FORMAT, format);
+        entity.setProperty(Constants.TOURNAMENT_SIZE, Integer.parseInt(numTeams));
+        entity.setProperty(Constants.TOURNAMENT_CREATEDATE, date);
+        entity.setProperty(Constants.TOURNAMENT_START, null);
+        entity.setProperty(Constants.TOURNAMENT_END, null);
+        datastore.put(entity);
+
+        resp.getWriter().write(entity.toString());
     }
 
     @Override
