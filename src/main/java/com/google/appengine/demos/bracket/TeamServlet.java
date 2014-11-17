@@ -91,49 +91,52 @@ public class TeamServlet extends HttpServlet {
         datastore.put(team1);
     }
 
-//    @Override
-//    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-//        Gson gson = new Gson();
-//        BufferedReader reader = req.getReader();
-//        String json = reader.readLine();
-//
-//        if (json == null || json.isEmpty()) {
-//            return;
-//        }
-//
-//        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-//        Tournament tournament = gson.fromJson(json, Tournament.class);
-//
-//        System.out.println(tournament.toString());
-//
-//        // Query the entity with name
-//        Query query = new Query(Constants.TOURNAMENT_KEY);
-//        query.setFilter(Query.FilterOperator.EQUAL.of(Constants.TOURNAMENT_NAME, tournament.t_name));
-//
-//        PreparedQuery pq = datastore.prepare(query);
-//        Entity entity = pq.asSingleEntity();
-//
-//        if (entity == null) {
-//            return;
-//        }
-//
-//        if (tournament.t_format != null) {
-//            entity.setProperty(Constants.TOURNAMENT_FORMAT, tournament.t_format);
-//        }
-//
-//        if (tournament.t_size != 0) {
-//            entity.setProperty(Constants.TOURNAMENT_SIZE, tournament.t_size);
-//        }
-//
-//        if (tournament.t_end != null) {
-//            entity.setProperty(Constants.TOURNAMENT_END, tournament.t_end);
-//        }
-//
-//        datastore.put(entity); // update
-//
-//        resp.addHeader("Access-Control-Allow-Origin", "*");
-//        resp.getWriter().write("Successful");
-//    }
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Gson gson = new Gson();
+        BufferedReader reader = req.getReader();
+        String json = reader.readLine();
+
+        if (json == null || json.isEmpty()) {
+            return;
+        }
+
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+        Tournament tournament = gson.fromJson(json, Tournament.class);
+
+        Team team = gson.fromJson(json, Team.class);
+
+        System.out.println(team.toString());
+
+        // Query the entity with name
+        Query query = new Query(Constants.TOURNAMENT_KEY);
+        query.setFilter(Query.FilterOperator.EQUAL.of(Constants.TOURNAMENT_NAME, tournament.t_name));
+        query.setFilter(Query.FilterOperator.EQUAL.of(Constants.TEAM_NAME, team.team_name));
+
+        PreparedQuery pq = datastore.prepare(query);
+        Entity entity = pq.asSingleEntity();
+
+        if (entity == null) {
+            return;
+        }
+
+        if (tournament.t_format != null) {
+            entity.setProperty(Constants.TOURNAMENT_FORMAT, tournament.t_format);
+        }
+
+        if (tournament.t_size != 0) {
+            entity.setProperty(Constants.TOURNAMENT_SIZE, tournament.t_size);
+        }
+
+        if (tournament.t_end != null) {
+            entity.setProperty(Constants.TOURNAMENT_END, tournament.t_end);
+        }
+
+        datastore.put(entity); // update
+
+        resp.addHeader("Access-Control-Allow-Origin", "*");
+        resp.getWriter().write("Successful");
+    }
     
     public void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {

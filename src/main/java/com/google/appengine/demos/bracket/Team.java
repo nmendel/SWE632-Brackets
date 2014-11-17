@@ -10,4 +10,14 @@ public class Team {
   	Team() {
   	
   	}
+
+    @Override
+    public String toString() {
+        return "Team{" +
+                "id=" + id +
+                ", team_name='" + team_name + '\'' +
+                ", team_location='" + team_location + '\'' +
+                ", team_score=" + team_score +
+                '}';
+    }
 }
