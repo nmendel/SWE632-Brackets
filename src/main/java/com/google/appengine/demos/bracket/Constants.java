@@ -7,6 +7,7 @@ public class Constants {
     public static final String BRACKET_KEY = "bracket";
 
     public static final String TOURNAMENT_KEY = "tournament";
+    public static final String TOURNAMENT_ID = "t_id";
     public static final String TOURNAMENT_NAME = "t_name";
     public static final String TOURNAMENT_FORMAT = "t_format";
     public static final String TOURNAMENT_SIZE = "t_size";

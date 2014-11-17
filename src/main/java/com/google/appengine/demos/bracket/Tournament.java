@@ -4,6 +4,7 @@ package com.google.appengine.demos.bracket;
  * Created by hung on 11/15/14.
  */
 public class Tournament {
+    public String t_id;
     public String t_name;
     public String t_format;
     public String t_create;

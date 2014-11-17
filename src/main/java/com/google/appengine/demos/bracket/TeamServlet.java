@@ -86,20 +86,6 @@ public class TeamServlet extends HttpServlet {
         return datastore.prepare(query).asList(FetchOptions.Builder.withDefaults());
     }
 
-    public void testCode(DatastoreService datastore, Key key) {
-        Entity team0 = new Entity(Constants.TEAM_KEY, key);
-        team0.setProperty(Constants.TEAM_NAME, "name1");
-        team0.setProperty(Constants.TEAM_TOURNAMENT, "tourney1");
-        team0.setProperty(Constants.TEAM_SCORE, "23");
-        datastore.put(team0);
-
-        Entity team1 = new Entity(Constants.TEAM_KEY, key);
-        team1.setProperty(Constants.TEAM_NAME, "name2");
-        team1.setProperty(Constants.TEAM_TOURNAMENT, "tourney1");
-        team1.setProperty(Constants.TEAM_SCORE, "20");
-        datastore.put(team1);
-    }
-
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Gson gson = new Gson();
@@ -111,34 +97,38 @@ public class TeamServlet extends HttpServlet {
         }
 
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        Tournament tournament = gson.fromJson(json, Tournament.class);
 
         Team team = gson.fromJson(json, Team.class);
 
         System.out.println(team.toString());
 
         // Query the entity with name
-        Query query = new Query(Constants.TOURNAMENT_KEY);
-        query.setFilter(Query.FilterOperator.EQUAL.of(Constants.TOURNAMENT_NAME, tournament.t_name));
-        query.setFilter(Query.FilterOperator.EQUAL.of(Constants.TEAM_NAME, team.team_name));
+        Query query = new Query(Constants.TEAM_KEY);
+        query.setFilter(Query.FilterOperator.EQUAL.of(Constants.TEAM_ID, team.team_id));
 
         PreparedQuery pq = datastore.prepare(query);
         Entity entity = pq.asSingleEntity();
 
-        if (entity == null) {
+        if (entity == null || team.team_id == null) {
+            resp.addHeader("Access-Control-Allow-Origin", "*");
+            resp.getWriter().write("No record");
             return;
         }
 
-        if (tournament.t_format != null) {
-            entity.setProperty(Constants.TOURNAMENT_FORMAT, tournament.t_format);
+        if (team.team_name != null) {
+            entity.setProperty(Constants.TEAM_NAME, team.team_name);
         }
 
-        if (tournament.t_size != 0) {
-            entity.setProperty(Constants.TOURNAMENT_SIZE, tournament.t_size);
+        if (team.team_score != 0) {
+            entity.setProperty(Constants.TEAM_SCORE, team.team_score);
         }
 
-        if (tournament.t_end != null) {
-            entity.setProperty(Constants.TOURNAMENT_END, tournament.t_end);
+        if (team.team_active != null) {
+            entity.setProperty(Constants.TEAM_ACTIVE, team.team_active);
+        }
+
+        if (team.team_location != null) {
+            entity.setProperty(Constants.TEAM_LOCATION, team.team_location);
         }
 
         datastore.put(entity); // update

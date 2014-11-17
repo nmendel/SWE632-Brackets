@@ -125,23 +125,4 @@ public class TournamentServlet extends HttpServlet {
                 .addSort(Constants.TOURNAMENT_START, Query.SortDirection.DESCENDING);
         return datastore.prepare(query).asList(FetchOptions.Builder.withDefaults());
     }
-
-    public void testCode(DatastoreService datastore, Key key) {
-        Date date = new Date();
-        Entity tourn = new Entity(Constants.TOURNAMENT_KEY, key);
-        tourn.setProperty(Constants.TOURNAMENT_NAME, "B-BALL");
-        tourn.setProperty(Constants.TOURNAMENT_FORMAT, "Single Elimination");
-        tourn.setProperty(Constants.TOURNAMENT_SIZE, 16);
-        tourn.setProperty(Constants.TOURNAMENT_START, date);
-        tourn.setProperty(Constants.TOURNAMENT_END, null);
-        datastore.put(tourn);
-
-        Entity tourn0 = new Entity(Constants.TOURNAMENT_KEY, key);
-        tourn0.setProperty(Constants.TOURNAMENT_NAME, "B-BALL-2");
-        tourn0.setProperty(Constants.TOURNAMENT_FORMAT, "Single Elimination");
-        tourn0.setProperty(Constants.TOURNAMENT_SIZE, 16);
-        tourn0.setProperty(Constants.TOURNAMENT_START, date);
-        tourn0.setProperty(Constants.TOURNAMENT_END, null);
-        datastore.put(tourn0);
-    }
 }
