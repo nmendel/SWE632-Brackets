@@ -16,7 +16,9 @@ public class Constants {
 
     public static final String TEAM_KEY = "team";
     public static final String TEAM_TOURNAMENT = "team_tournament";
+    public static final String TEAM_ID = "team_id";
     public static final String TEAM_NAME = "team_name";
     public static final String TEAM_SCORE = "team_score";
     public static final String TEAM_LOCATION = "team_location";
+    public static final String TEAM_ACTIVE = "team_active";
 }
