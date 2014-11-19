@@ -153,14 +153,14 @@ var team = {
 			var store = team.grid.object.getStore();
             team.grid.rowEditing.cancelEdit();
 
-            // Create a model instance
-             var r = Ext.create('TeamModel', {
-                name: 'New Team',
-                location: 'GMU'
+            postData('teams', {team_name: ''}, function(resp) {
+            	console.log(resp);
+            	store.remove(0); // TODO: 2 rows are being added?
+            	store.insert(0, Ext.create('TeamModel', resp));
+            	team.grid.rowEditing.startEdit(0, 0);
             });
             
-            store.insert(0, r);
-            team.grid.rowEditing.startEdit(0, 0);
+            
        },
        
         removeTeam: function() {

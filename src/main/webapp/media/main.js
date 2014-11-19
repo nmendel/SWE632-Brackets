@@ -152,6 +152,7 @@ function postData(url, data, successFunc, errorFunc, alternateType) {
 		dataType : "json",
 		success : successFunc,
 		error : errorFunc,
+		complete: successFunc  // HACK
 	});
 	return false;
 }

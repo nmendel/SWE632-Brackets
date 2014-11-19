@@ -22,4 +22,12 @@ public class Team {
                 ", team_score=" + team_score +
                 '}';
     }
+    
+    
+    public String toJSON() {
+        return "{\"team_id\": \"" + team_id +
+        	   "\", \"team_name\": \"" + team_name + 
+        	   "\", \"team_location\": \"" + team_location + 
+        	   "\", \"team_active\": \"" + team_active + "\"}";
+    }
 }
