@@ -180,7 +180,7 @@ public class TeamServlet extends HttpServlet {
         Entity teamEnt = new Entity(Constants.TEAM_KEY);
 
         teamEnt.setProperty(Constants.TEAM_NAME, team.team_name);
-        teamEnt.setProperty(Constants.TEAM_ID, team.team_name); // TODO: need some kind of unique id
+        teamEnt.setProperty(Constants.TEAM_ID, team.team_id);
        	teamEnt.setProperty(Constants.TEAM_SCORE, team.team_score);
        	
        	String active = team.team_active;
