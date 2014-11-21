@@ -1,28 +1,15 @@
 
-var bracket = {
-	teams: [],
-	results: [],
-	
-	onMatchClick: function(data) {
-		console.log(data);
-	},
-	
-	editMatch: function(container, data, doneCb) {
-		var input = $('<input type="text">');
-	    input.val(data.name);
-	    container.html(input);
-	    input.focus();
-	    input.blur(function() { doneCb({flag: data.flag, name: input.val()}) });
-	},
-	
-	create: function() {
-		// TODO: can make them look like this and use all of the data for rendering and other stuff
-		/*    teams : [
-      		[{name: "Team 1", flag: 'fi'}, {name: "Team 2", flag: 'kr'}],
-      		[{name: "Team 3", flag: 'se'}, {name: "Team 4", flag: 'us'}]
-    	]*/
-    	
-		bracket.teams = [
+var teams1 = [
+		      ["Team 1",  "Team 2" ],
+		      ["Team 3",  "Team 4" ],
+		      ["Team 5",  "Team 6" ],
+		      ["Team 7",  "Team 8" ],
+		      ["Team 9",  "Team 10"],
+		      ["Team 11", "Team 12"],
+		      ["Team 13", "Team 14"],
+		      ["Team 15", "Team 16"],
+];
+var teams2 = [
 		      ["Team 1",  "Team 2" ],
 		      ["Team 3",  "Team 4" ],
 		      ["Team 5",  "Team 6" ],
@@ -56,43 +43,98 @@ var bracket = {
 		      ["Team 1e3", "Team 14e"],
 		      ["Team 1e5", "Team 16e"],
 		];
+
+var bracket = {
+	tournamentModel: null,
+	teams: [],
+	results: [],
+	
+	onMatchClick: function(data) {
+		console.log(data);
+	},
+	
+	/*
+	 * Triggered if you click on a team name
+	 */
+	editMatch: function(container, data, doneCb) {
+		var input = $('<input type="text">');
+	    input.val(data.name);
+	    container.html(input);
+	    input.focus();
+	    console.log("edit");
+	    input.blur(function() {
+	    	doneCb(input.val());
+	    });
+	},
+	
+	/*
+	 * Render is called on every match everytime something is edited (even if it didn't change)
+	 */
+	renderMatch: function(container, data, score) {
+	    return container.append(data);
+	},
+	
+	/*
+	 * Triggered onBlur for a team name or score
+	 */
+	save: function(bracketObj) {
+		console.log("save");
+		console.log(bracketObj);
 		
-		bracket.results = [[]];
+		bracket.tournamentModel.data.teams = bracketObj.teams;
+		bracket.tournamentModel.data.results = bracketObj.results;
+		console.log(bracket.tournamentModel.data);
+		
+		// TODO: we need to make our server calls properly cause the success function to fire
+		postData('tournaments', bracket.tournamentModel.data, function() {
+			console.log("success");
+		}, function() {
+			console.log("error");
+		});
+	},
+	
+	create: function() {
+		// TODO: show creation form
+	},
+	
+	show: function(tournamentRow, index) {
+		// TODO: can make them look like this and use all of the data for rendering and other stuff
+		/*    teams : [
+      		[{name: "Team 1", flag: 'fi'}, {name: "Team 2", flag: 'kr'}],
+      		[{name: "Team 3", flag: 'se'}, {name: "Team 4", flag: 'us'}]
+    	]*/
+    	
+    	// TODO: this stuff should be stored on the row, this code until the next TODO will eventually be removed
+		if(index < 2) {
+			tournamentRow['teams'] = teams1;			
+		} else {
+			tournamentRow['teams'] = teams2;
+		}
+		
+		tournamentRow['results'] = [[]];
 		for(var i = 0; i < bracket.teams.length; i++) {
 			bracket.results[0].push(['', '', 'Match ' + (i + 1)]);
 		}
 
-		var minimalData = {
+
+
+		// TODO: here is the theoretical start of this function
+		// TODO: we might have to look up this info again OR we'll have to keep the store up to date with the bracket
+		bracket.tournamentModel = tournamentRow;
+		bracket.teams = tournamentRow.teams;
+		bracket.results = tournamentRow.results;
+
+		var data = {
 		    teams: bracket.teams,
 		    results : bracket.results
 		};
 		 
 	    $('#bracket .bracket').bracket({
 	    	 skipConsolationRound: true,
-		     init: minimalData, /* data to initialize the bracket with */
-		     save: function(){}, /* without save() labels are disabled */
+		     init: data, /* data to initialize the bracket with */
+		     save: bracket.save, /* without save() labels are disabled */
     		 decorator: {edit: bracket.editMatch,
-    		 			 render: render_fn}
+    		 			 render: bracket.renderMatch}
 		});
-	}	
+	}
 };
-
-/* Edit function is called when team label is clicked */
-function edit_fn(container, data, doneCb) {
-  var input = $('<input type="text">');
-  input.val(data.name);
-  container.html(input);
-  input.focus();
-  input.blur(function() { doneCb({flag: data.flag, name: input.val()}) });
-}
- 
-/* Render function is called for each team label when data is changed, data
- * contains the data object given in init and belonging to this slot. */
-function render_fn(container, data, score) {
-  /*
-  if (!data.flag || !data.name)
-    return
-  container.append('<img src="site/png/'+data.flag+'.png" /> ').append(data.name)
-  */
- return container.append(data);
-}

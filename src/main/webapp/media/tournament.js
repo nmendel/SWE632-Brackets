@@ -126,8 +126,8 @@ var tournament = {
 			return tournament.grid.object;
 		},
 		
-		onSelect: function() {
-			console.log("select");
+		onSelect: function(rowModel, row, index) {
+			bracket.show(row, index);
 		}
 	}
 };
