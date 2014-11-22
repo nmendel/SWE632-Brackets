@@ -68,3 +68,20 @@ body {
 	margin-top: -20px;
 	font-family: "Comic Sans MS", cursive, sans-serif;
 }
+
+/* highlighted game */
+div.jQBracket .team.highlight {
+    background-color: #3c0;
+    color: #000;
+}
+/* team picking game */
+div.jQBracket .team.picking {
+    background-color: #D6EBFF;
+    color: #000;
+}
+/* both */
+div.jQBracket .team.picking.highlight {
+    background-color: #ADD6FF;
+}
+
+

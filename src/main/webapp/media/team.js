@@ -13,6 +13,7 @@ Ext.define('TeamModel',{
 var team = {
 	panel: {
 		object: null,
+		teamPicker: null,
 		
 		create: function() {
 			team.panel.object = Ext.create('Ext.panel.Panel', {
@@ -26,10 +27,100 @@ var team = {
 			
 			var store = team.store.create();
 			team.grid.create(store);
+			
+			team.panel.object.add(team.picker.create());
 			team.panel.object.add(team.grid.object);
 			return team.panel.object;
 		}
-	}, 
+	},
+	
+	picker: {
+		object: null,
+		pickingContainer: null,
+		
+		create: function() {
+			team.picker.object = Ext.create("Ext.panel.Panel", {
+            	hidden: true,
+            	defaults: {
+                	enableToggle: true
+                },
+                // TODO: text saying what to do, check mark type button for closing, center and make look better
+            	items: [{
+                    xtype: 'button',
+                    text: '',
+                    scale: 'large',
+                    toggleGroup: 'picker',
+                    listeners: {
+                    	// Don't allow this button to be unpressed by pressing it
+                    	// toggle by pressing the other button only
+                    	click: function() {
+                    		if(!this.pressed) {
+                    			this.toggle(true, true);
+                    		}
+                    	}
+                    }
+                },{
+                    xtype: 'button',
+                    text: '',
+                    scale: 'large',
+                    toggleGroup: 'picker',
+                    listeners: {
+                    	// Don't allow this button to be unpressed by pressing it
+                    	// toggle by pressing the other button only
+                    	click: function() {
+                    		if(!this.pressed) {
+                    			this.toggle(true, true);
+                    		}
+                    	}
+                    }
+                }]
+            });
+            
+	        return team.picker.object;
+		},
+		
+		pickTeams: function(gameContainer, teamContainers, team1, team2, highlight) {
+			console.log("Pick teams: " + team1 + " vs " + team2);
+			console.log(team.picker.pickingContainer);
+			console.log(team.picker.gameContainer);
+			console.log(team.picker.pickingContainer == null);
+			team.picker.object.show();
+			
+			// stop editing previous game if applicable
+			if(team.picker.pickingContainer != null) {
+				console.log("stop");
+				bracket.doneEditing(team.picker.pickingContainer);
+			}
+			
+			team.picker.pickingContainer = gameContainer;
+			
+			// set the team names and toggle the button for the team that was clicked on
+			var teamButtons = team.picker.object.query("button");
+			teamButtons[0].setText(team1);
+			teamButtons[1].setText(team2);
+			teamButtons[highlight].toggle(true, true);
+			teamButtons[(highlight + 1) % 2].toggle(false, true);
+		},
+		
+		done: function() {
+			team.picker.object.hide();
+			bracket.doneEditing(team.picker.pickingContainer);
+		},
+		
+		setTeam: function(grid, row, index) {
+			if(team.picker.object.isVisible()) {
+				var teamButtons = team.picker.object.query("button");
+				var index = 0;
+				if(teamButtons[1].pressed) {
+					index = 1;
+				}
+				
+				teamButtons[index].setText(row.data.team_name);
+				bracket.setTeam(row.data.team_name, index);
+			}
+		}
+		
+	},
 	
 	store: {
 		object: null,
@@ -140,7 +231,7 @@ var team = {
 		            selectionchange: function(view, records) {
                 		team.grid.object.down('#removeTeam').setDisabled(!records.length);
             		},
-	                // select :
+	                select: team.picker.setTeam
 	                // itemcontextmenu : 
 	                // itemdblclick :
 	                // afterrender : 

@@ -95,7 +95,7 @@ Ext.define('Ext.app.LiveBracket', {
                 items: [{
                     id: 'app-accordion',
                     title: 'Manage',
-                    region: 'east',
+                    region: 'west',
                     animCollapse: true,
                     width: 460,
                     minWidth: 150,

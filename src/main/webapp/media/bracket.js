@@ -1,3 +1,5 @@
+// TODO: disable or use buttons from jquery UI that can change the size and format of the tournament?
+
 
 var teams1 = [
 		      ["Team 1",  "Team 2" ],
@@ -49,22 +51,88 @@ var bracket = {
 	teams: [],
 	results: [],
 	
+	gameEditing: {
+		container: null,
+		doneCallback1: null,
+		doneCallback2: null
+	},
+	
 	onMatchClick: function(data) {
 		console.log(data);
+	},
+	
+	gameFromTeamLabel: function(teamLabel) {
+		return $(teamLabel).parents("div.teamContainer");
+	},
+	
+	teamsFromGameContainer: function(gameContainer) {
+		return gameContainer.children("div.team").children("div.label");
 	},
 	
 	/*
 	 * Triggered if you click on a team name
 	 */
 	editMatch: function(container, data, doneCb) {
-		var input = $('<input type="text">');
-	    input.val(data.name);
-	    container.html(input);
-	    input.focus();
-	    console.log("edit");
-	    input.blur(function() {
-	    	doneCb(input.val());
-	    });
+		// TODO: handle switching, is it necessary?
+		if(bracket.gameEditing.container != null) {
+			//console.log("b " + bracket.gameEditing.container);
+			/*
+			var teamName = bracket.gameEditing.container[0].innerHTML;
+			bracket.gameEditing.container = null;
+			bracket.gameEditing.doneCallback(teamName);
+			
+			// wait for that doneCallback to finish, call this function again (race condition)
+			return setTimeout(function() {bracket.editMatch(container, data, doneCb)}, 1000);
+			*/
+		}
+		
+		//bracket.gameEditing.container = container;
+		console.log(container);
+		var gameContainer = bracket.gameFromTeamLabel(container);
+		console.log(gameContainer);
+		var teamContainers = bracket.teamsFromGameContainer(gameContainer);
+		var team1 = teamContainers[0].innerHTML;
+		var team2 = teamContainers[1].innerHTML;
+		
+		// Add picking class to both teams
+		gameContainer.children("div.team").addClass("picking");
+		
+		// Figure out which container was clicked on
+		var index = 1;
+		if(team1 == data) {
+			index = 0;
+			bracket.gameEditing.doneCallback1 = doneCb;
+		} else {
+			bracket.gameEditing.doneCallback2 = doneCb;
+		}
+		
+		// TODO:trying to grab other done callback
+		//teamContainers[(index + 1) % 2].click();
+		
+	    // Show team options 
+	    team.panel.object.expand();
+	    team.picker.pickTeams(gameContainer, teamContainers, team1, team2, index);
+	},
+	
+	doneEditing: function(gameContainer) {
+		// Remove picking class to both teams
+		console.log("done editing");
+		console.log(gameContainer);
+		gameContainer.children("div.team").removeClass("picking");
+		var teamContainers = bracket.teamsFromGameContainer(gameContainer);
+		
+		bracket.setTeam(teamContainers[0].innerHTML, 0);
+		bracket.setTeam(teamContainers[1].innerHTML, 1);
+	},
+	
+	setTeam: function(teamName, index) {
+		/* TODO: not working correctly
+		if(index == 0) {
+			bracket.gameEditing.doneCallback1(teamName);	
+		} else {
+			bracket.gameEditing.doneCallback2(teamName);
+		}
+		*/
 	},
 	
 	/*
