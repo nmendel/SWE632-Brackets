@@ -34,10 +34,79 @@ function init() {
 	var accordion = Ext.getCmp('app-accordion');
 	accordion.add(tournament.panel.create());
 	accordion.add(team.panel.create());
-	
+
+	var myForm = new Ext.form.Panel({
+        width:400,
+        height:400,
+        title:'New tournament',
+        floating:true,
+        closable:true,
+        items:[
+            {
+                xtype:'textfield',
+                fieldLabel:'Name',
+                name:'name',
+                padding:10
+            },
+            new Ext.form.RadioGroup({
+               id:'tournament_format',
+               xtype:'radiogroup',
+               fieldLabel:'Format',
+               columns:1,
+               padding:10,
+               vertical:true,
+               items: [
+                   { boxLabel: 'Single Elimination', name: 'rb', inputValue: '1', checked:true },
+                   { boxLabel: 'Double Elimination', name: 'rb', inputValue: '2'}
+               ]
+            }),
+            new Ext.form.RadioGroup({
+               id:'num_of_teams',
+               xtype:'radiogroup',
+               fieldLabel:'Team Count',
+               columns:3,
+               padding:10,
+               vertical:true,
+               items: [
+                    { boxLabel: '8', name: 'rb', inputValue: '1', checked:true },
+                    { boxLabel: '16', name: 'rb', inputValue: '2'},
+                    { boxLabel: '24', name: 'rb', inputValue: '3'},
+                    { boxLabel: '32', name: 'rb', inputValue: '4'},
+                    { boxLabel: '40', name: 'rb', inputValue: '5'},
+                    { boxLabel: '48', name: 'rb', inputValue: '6'}
+               ]
+            }),
+            new Ext.create('Ext.container.Container', {
+                layout: {
+                    type: 'hbox'
+                },
+                layoutConfig: {
+                    align:'middle'
+                },
+                width:300,
+                padding:20,
+                border:1,
+                items: [
+                    {
+                        xtype:'button',
+                        text:'Create',
+                        margin:'10 10 10 10'
+                    },
+                    {
+                        xtype:'button',
+                        text:'Cancel',
+                        margin:'10 10 10 10'
+                    }
+                ]
+            })
+        ]
+    });
+
+    myForm.show();
+
 	// TODO: Add the create tournament form, hidden
-	
-	
+
+
 	// TODO: Add the bracket container
 }
 
@@ -88,7 +157,8 @@ Ext.define('Ext.app.LiveBracket', {
 	            		click: bracket.create
 	            	}
 	            }]
-            },{
+            },
+            {
                 xtype: 'container',
                 region: 'center',
                 layout: 'border',
