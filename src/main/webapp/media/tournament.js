@@ -1,5 +1,4 @@
 
-// TODO: make date format nice, make started and finished check boxes work correctly
 
 Ext.define('TournamentModel',{
 	extend: 'Ext.data.Model',
@@ -16,6 +15,103 @@ Ext.define('TournamentModel',{
 var tournament = {
 	teams: null,
 	results: null,
+	
+	form: {
+		object: null,
+		
+		create: function() {
+			tournament.form.object = new Ext.form.Panel({
+		        width:400,
+		        height:400,
+		        title:'New tournament',
+		        floating:true,
+		        closable:true,
+		        hidden:false,
+		        items:[
+		            {
+		                xtype:'textfield',
+		                fieldLabel:'Name',
+		                name:'name',
+		                padding:10
+		            },
+		            new Ext.form.RadioGroup({
+		               id:'tournament_format',
+		               xtype:'radiogroup',
+		               fieldLabel:'Format',
+		               columns:1,
+		               padding:10,
+		               vertical:true,
+		               items: [
+		                   { boxLabel: 'Single Elimination', name: 'rb', inputValue: '1', checked:true },
+		                   { boxLabel: 'Double Elimination', name: 'rb', inputValue: '2'}
+		               ]
+		            }),
+		            new Ext.form.RadioGroup({
+		               id:'num_of_teams',
+		               xtype:'radiogroup',
+		               fieldLabel:'Team Count',
+		               columns:3,
+		               padding:10,
+		               vertical:true,
+		               items: [
+		                    { boxLabel: '8', name: 'rb', inputValue: '1', checked:true },
+		                    { boxLabel: '16', name: 'rb', inputValue: '2'},
+		                    { boxLabel: '24', name: 'rb', inputValue: '3'},
+		                    { boxLabel: '32', name: 'rb', inputValue: '4'},
+		                    { boxLabel: '40', name: 'rb', inputValue: '5'},
+		                    { boxLabel: '48', name: 'rb', inputValue: '6'}
+		               ]
+		            }),
+		            new Ext.create('Ext.container.Container', {
+		                layout: {
+		                    type: 'hbox'
+		                },
+		                layoutConfig: {
+		                    align:'middle'
+		                },
+		                width:300,
+		                padding:20,
+		                border:1,
+		                items: [
+		                    {
+		                        xtype:'button',
+		                        text:'Create',
+		                        margin:'10 10 10 10',
+		                        listeners: {
+		                        	click:tournament.form.save
+		                        }
+		                    },
+		                    {
+		                    	xtype:'button',
+		                        text:'Cancel',
+		                        margin:'10 10 10 10',
+		                        listeners: {
+		                        	click: function() {
+		                        		if(tournament.form.object != null) {
+		                        			tournament.form.object.close();
+		                        		}
+		                        	}
+		                        }
+		                    }
+		                ]
+		            })
+		        ]
+		    });
+		    
+		    tournament.form.object.show();
+		    
+		    return tournament.form.object;
+    	},
+    	
+    	save: function() {
+    		// create json
+    		var json = {};
+    		
+    		postData('tournaments', )
+    	},
+    	
+    	
+	},
 	
 	panel: {
 		object: null,

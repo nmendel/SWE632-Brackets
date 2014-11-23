@@ -150,7 +150,7 @@ public class TeamServlet extends HttpServlet {
 		
 		Gson gson = new Gson();
 		Team team = gson.fromJson(json, Team.class); 
-		Key k = KeyFactory.createKey("Team", team.team_name);
+		Key k = KeyFactory.createKey("Team", team.team_name); // TODO: + timestamp); to make it unique
 			
 		// Return json back without saving anything if a blank team name is passed in
 		if( team.team_name == null || team.team_name.equals("") ) {

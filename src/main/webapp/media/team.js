@@ -11,6 +11,8 @@ Ext.define('TeamModel',{
 });
 
 var team = {
+	MAX_NAME_LENGTH: 18,
+	
 	panel: {
 		object: null,
 		teamPicker: null,
@@ -46,34 +48,48 @@ var team = {
                 },
                 // TODO: text saying what to do, check mark type button for closing, center and make look better
             	items: [{
-                    xtype: 'button',
-                    text: '',
-                    scale: 'large',
-                    toggleGroup: 'picker',
-                    listeners: {
-                    	// Don't allow this button to be unpressed by pressing it
-                    	// toggle by pressing the other button only
-                    	click: function() {
-                    		if(!this.pressed) {
-                    			this.toggle(true, true);
-                    		}
-                    	}
-                    }
-                },{
-                    xtype: 'button',
-                    text: '',
-                    scale: 'large',
-                    toggleGroup: 'picker',
-                    listeners: {
-                    	// Don't allow this button to be unpressed by pressing it
-                    	// toggle by pressing the other button only
-                    	click: function() {
-                    		if(!this.pressed) {
-                    			this.toggle(true, true);
-                    		}
-                    	}
-                    }
-                }]
+            		xtype: 'box',
+            		html: '<div><p><h1>Pick teams:</h1></p></div>'
+            	},{
+            		xtype: 'panel',
+            		layout: {
+        			    type: 'hbox',
+					    pack: 'center',
+					    align: 'center'
+            		},
+            		border: false,
+            		items: [{
+	                    xtype: 'button',
+	                    text: '',
+	                    scale: 'large',
+	                    margin: '0 20 10 20',
+	                    toggleGroup: 'picker',
+	                    listeners: {
+	                    	// Don't allow this button to be unpressed by pressing it
+	                    	// toggle by pressing the other button only
+	                    	click: function() {
+	                    		if(!this.pressed) {
+	                    			this.toggle(true, true);
+	                    		}
+	                    	}
+	                    }
+	                },{
+	                    xtype: 'button',
+	                    text: '',
+	                    scale: 'large',
+	                    margin: '0 10 10 10',
+	                    toggleGroup: 'picker',
+	                    listeners: {
+	                    	// Don't allow this button to be unpressed by pressing it
+	                    	// toggle by pressing the other button only
+	                    	click: function() {
+	                    		if(!this.pressed) {
+	                    			this.toggle(true, true);
+	                    		}
+	                    	}
+	                    }
+	                }]
+            	}]
             });
             
 	        return team.picker.object;
@@ -96,8 +112,8 @@ var team = {
 			
 			// set the team names and toggle the button for the team that was clicked on
 			var teamButtons = team.picker.object.query("button");
-			teamButtons[0].setText(team1);
-			teamButtons[1].setText(team2);
+			teamButtons[0].setText(team1.substr(0, team.MAX_NAME_LENGTH));
+			teamButtons[1].setText(team2.substr(0, team.MAX_NAME_LENGTH));
 			teamButtons[highlight].toggle(true, true);
 			teamButtons[(highlight + 1) % 2].toggle(false, true);
 		},
@@ -115,7 +131,7 @@ var team = {
 					index = 1;
 				}
 				
-				teamButtons[index].setText(row.data.team_name);
+				teamButtons[index].setText(row.data.team_name.substr(0, team.MAX_NAME_LENGTH));
 				bracket.setTeam(row.data.team_name, index);
 			}
 		}
@@ -246,9 +262,20 @@ var team = {
 
             postData('teams', {team_name: ''}, function(resp) {
             	console.log(resp);
-            	store.remove(0); // TODO: 2 rows are being added?
+            	store.remove(0);
             	store.insert(0, Ext.create('TeamModel', resp));
             	team.grid.rowEditing.startEdit(0, 0);
+            	
+            	// set focus on the top row, one way or another
+            	try {
+            		$(team.grid.object.el.dom).children("div[id^=roweditor-]")
+            			.children("div[id^=roweditor-]").children("div[id^=roweditor-]")
+            			.children("div[id^=roweditor-]").children("table").children("tbody")
+            			.children("tr").children("td").children("input")[0].focus();	
+            	} catch(e) {
+            		// do nothing
+            	}
+            	
             });
             
             

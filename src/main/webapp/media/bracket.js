@@ -162,7 +162,7 @@ var bracket = {
 	},
 	
 	create: function() {
-		// TODO: show creation form
+		// TODO: create new bracket
 	},
 	
 	show: function(tournamentRow, index) {

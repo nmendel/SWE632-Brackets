@@ -10,7 +10,8 @@ var test = {
 	teams: [
 		{team_name: "Randall Flagg", team_location: "Midworld", team_active: '1'},
 		{team_name: "Leroy Jenkins", team_location: "Burbank, Australia", team_active: '1'},
-		{team_name: "Oliver Queen", team_location: "Starling City", team_active: '1'}
+		{team_name: "Oliver Queen", team_location: "Starling City", team_active: '1'},
+		{team_name: "Really fucking long name, way too long", team_location: "Starling City", team_active: '1'}
 	],
 	
 	MockAjax: function() {
