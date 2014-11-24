@@ -53,9 +53,15 @@ public class TournamentServlet extends HttpServlet {
     
     @Override
     public void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String name = req.getParameter(Constants.TOURNAMENT_NAME);
-        String format = req.getParameter(Constants.TOURNAMENT_FORMAT);
-        String numTeams = req.getParameter(Constants.TOURNAMENT_SIZE);
+        Gson gson = new Gson();
+        BufferedReader reader = req.getReader();
+        String json = reader.readLine();
+
+        if (json == null || json.isEmpty()) {
+            return;
+        }
+
+        Tournament tournament = gson.fromJson(json, Tournament.class);
         
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         Key key = KeyFactory.createKey(Constants.BRACKET_KEY, Constants.BRACKET_KEY);
@@ -65,12 +71,14 @@ public class TournamentServlet extends HttpServlet {
 		String date = df.format(today);
 
         Entity entity = new Entity(Constants.TOURNAMENT_KEY, key);
-        entity.setProperty(Constants.TOURNAMENT_NAME, name);
-        entity.setProperty(Constants.TOURNAMENT_FORMAT, format);
-        entity.setProperty(Constants.TOURNAMENT_SIZE, Integer.parseInt(numTeams));
+        entity.setProperty(Constants.TOURNAMENT_NAME, tournament.t_name);
+        entity.setProperty(Constants.TOURNAMENT_FORMAT, tournament.t_format);
+        entity.setProperty(Constants.TOURNAMENT_SIZE, tournament.t_size);
         entity.setProperty(Constants.TOURNAMENT_CREATEDATE, date);
         entity.setProperty(Constants.TOURNAMENT_START, null);
         entity.setProperty(Constants.TOURNAMENT_END, null);
+        entity.setProperty("teams", tournament.teams);
+        entity.setProperty("results", tournament.results);
         datastore.put(entity);
 
         resp.getWriter().write(entity.toString());
@@ -113,6 +121,8 @@ public class TournamentServlet extends HttpServlet {
         if (tournament.t_end != null) {
             entity.setProperty(Constants.TOURNAMENT_END, tournament.t_end);
         }
+
+        // TODO :teams and results property
 
         datastore.put(entity); // update
 

@@ -22,13 +22,31 @@ var tournament = {
 		create: function() {
 			tournament.form.object = new Ext.form.Panel({
 		        width:400,
-		        height:400,
-		        title:'New tournament',
+		        height:320,
+		        title:'',
 		        floating:true,
 		        closable:true,
 		        hidden:false,
 		        items:[
+                    new Ext.create('Ext.panel.Panel', {
+                        width:400,
+                        padding:10,
+                        border:false,
+                        xtype: 'panel',
+                        layout: {
+                            type: 'hbox',
+                            pack: 'center',
+                            align: 'center'
+                        },
+                        items:[{
+                            xtype:'label',
+                            text:'New Tournament',
+                            align:'middle',
+                            style: 'font-size:20px'
+                        }]
+		            }),
 		            {
+		                id:'tournament_name',
 		                xtype:'textfield',
 		                fieldLabel:'Name',
 		                name:'name',
@@ -42,8 +60,8 @@ var tournament = {
 		               padding:10,
 		               vertical:true,
 		               items: [
-		                   { boxLabel: 'Single Elimination', name: 'rb', inputValue: '1', checked:true },
-		                   { boxLabel: 'Double Elimination', name: 'rb', inputValue: '2'}
+		                   { boxLabel: 'Single Elimination', name: 'tf', inputValue: 'single', checked:true },
+		                   { boxLabel: 'Double Elimination', name: 'tf', inputValue: 'double'}
 		               ]
 		            }),
 		            new Ext.form.RadioGroup({
@@ -54,46 +72,46 @@ var tournament = {
 		               padding:10,
 		               vertical:true,
 		               items: [
-		                    { boxLabel: '8', name: 'rb', inputValue: '1', checked:true },
-		                    { boxLabel: '16', name: 'rb', inputValue: '2'},
-		                    { boxLabel: '24', name: 'rb', inputValue: '3'},
-		                    { boxLabel: '32', name: 'rb', inputValue: '4'},
-		                    { boxLabel: '40', name: 'rb', inputValue: '5'},
-		                    { boxLabel: '48', name: 'rb', inputValue: '6'}
+		                    { boxLabel: '8' , name: 'nt', inputValue: '8', checked:true },
+		                    { boxLabel: '16', name: 'nt', inputValue: '16'},
+		                    { boxLabel: '24', name: 'nt', inputValue: '24'},
+		                    { boxLabel: '32', name: 'nt', inputValue: '32'},
+		                    { boxLabel: '40', name: 'nt', inputValue: '40'},
+		                    { boxLabel: '48', name: 'nt', inputValue: '48'}
 		               ]
 		            }),
-		            new Ext.create('Ext.container.Container', {
-		                layout: {
-		                    type: 'hbox'
-		                },
-		                layoutConfig: {
-		                    align:'middle'
-		                },
-		                width:300,
-		                padding:20,
-		                border:1,
-		                items: [
-		                    {
-		                        xtype:'button',
-		                        text:'Create',
-		                        margin:'10 10 10 10',
-		                        listeners: {
-		                        	click:tournament.form.save
-		                        }
-		                    },
-		                    {
-		                    	xtype:'button',
-		                        text:'Cancel',
-		                        margin:'10 10 10 10',
-		                        listeners: {
-		                        	click: function() {
-		                        		if(tournament.form.object != null) {
-		                        			tournament.form.object.close();
-		                        		}
-		                        	}
-		                        }
-		                    }
-		                ]
+		            new Ext.create('Ext.panel.Panel', {
+		                width:400,
+		                padding:10,
+		                border:false,
+                        xtype: 'panel',
+                        layout: {
+                            type: 'hbox',
+                            pack: 'center',
+                            align: 'center'
+                        },
+                        items:[
+                            {
+                                xtype:'button',
+                                text:'Create',
+                                margin:'10 10 10 10',
+                                listeners: {
+                                    click:tournament.form.save
+                                }
+                            },
+                            {
+                                xtype:'button',
+                                text:'Cancel',
+                                margin:'10 10 10 10',
+                                listeners: {
+                                    click: function() {
+                                        if(tournament.form.object != null) {
+                                            tournament.form.object.close();
+                                        }
+                                    }
+                                }
+                            }
+                        ]
 		            })
 		        ]
 		    });
@@ -104,10 +122,12 @@ var tournament = {
     	},
     	
     	save: function() {
-    		// create json
-    		var json = {};
-    		
-    		postData('tournaments', )
+            var name = Ext.getCmp('tournament_name').getValue();
+            var format = Ext.getCmp('tournament_format').getValue().tf;
+            var num = Ext.getCmp('num_of_teams').getValue().nt;
+
+    		postData('tournaments', {t_name:name, t_format:format, t_size:num, teams:'', results:''}, null);
+    		tournament.form.object.close();
     	},
     	
     	

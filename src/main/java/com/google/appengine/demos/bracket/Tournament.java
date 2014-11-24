@@ -11,6 +11,8 @@ public class Tournament {
     public String t_start;
     public String t_end;
     public int t_size;
+    public String teams;
+    public String results;
 
     public Tournament() {
 
