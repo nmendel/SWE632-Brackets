@@ -1,6 +1,6 @@
 // TODO: disable or use buttons from jquery UI that can change the size and format of the tournament?
 
-
+// TODO: remove these once we can get them from the db
 var teams1 = [
 		      ["Team 1",  "Team 2" ],
 		      ["Team 3",  "Team 4" ],
@@ -45,11 +45,10 @@ var teams2 = [
 		      ["Team 1e3", "Team 14e"],
 		      ["Team 1e5", "Team 16e"],
 		];
-
+		
 var bracket = {
+	editing: false,
 	tournamentModel: null,
-	teams: [],
-	results: [],
 	
 	gameEditing: {
 		container: null,
@@ -73,6 +72,13 @@ var bracket = {
 	 * Triggered if you click on a team name
 	 */
 	editMatch: function(container, data, doneCb) {
+		// short circuit
+		if(bracket.editing) {
+			bracket.editing = false;
+			doneCb(data);
+			return;
+		}
+		
 		// TODO: handle switching, is it necessary?
 		if(bracket.gameEditing.container != null) {
 			//console.log("b " + bracket.gameEditing.container);
@@ -87,52 +93,55 @@ var bracket = {
 		}
 		
 		//bracket.gameEditing.container = container;
-		console.log(container);
 		var gameContainer = bracket.gameFromTeamLabel(container);
-		console.log(gameContainer);
 		var teamContainers = bracket.teamsFromGameContainer(gameContainer);
 		var team1 = teamContainers[0].innerHTML;
 		var team2 = teamContainers[1].innerHTML;
-		
-		// Add picking class to both teams
-		gameContainer.children("div.team").addClass("picking");
 		
 		// Figure out which container was clicked on
 		var index = 1;
 		if(team1 == data) {
 			index = 0;
-			bracket.gameEditing.doneCallback1 = doneCb;
-		} else {
-			bracket.gameEditing.doneCallback2 = doneCb;
 		}
 		
-		// TODO:trying to grab other done callback
-		//teamContainers[(index + 1) % 2].click();
+		doneCb(data);
 		
 	    // Show team options 
 	    team.panel.object.expand();
 	    team.picker.pickTeams(gameContainer, teamContainers, team1, team2, index);
+	    
+	    // Add picking class to both teams
+		gameContainer.children("div.team").addClass("picking");
 	},
 	
-	doneEditing: function(gameContainer) {
+	doneEditing: function(gameContainer, team1, team2) {
 		// Remove picking class to both teams
 		console.log("done editing");
 		console.log(gameContainer);
 		gameContainer.children("div.team").removeClass("picking");
 		var teamContainers = bracket.teamsFromGameContainer(gameContainer);
 		
-		bracket.setTeam(teamContainers[0].innerHTML, 0);
-		bracket.setTeam(teamContainers[1].innerHTML, 1);
+		// replace in bracket.tournamentModel.data
+		bracket.replaceTeam(teamContainers[0].innerHTML, team1);
+		bracket.replaceTeam(teamContainers[1].innerHTML, team2);
+		
+		// save in db
+		var bracketObj = {
+			teams: bracket.tournamentModel.data.teams,
+			results: bracket.tournamentModel.data.results
+		};
+		bracket.save(bracketObj, null, true);
+		bracket.editing = true;
 	},
 	
-	setTeam: function(teamName, index) {
-		/* TODO: not working correctly
-		if(index == 0) {
-			bracket.gameEditing.doneCallback1(teamName);	
-		} else {
-			bracket.gameEditing.doneCallback2(teamName);
+	replaceTeam: function(team, newTeam) {
+		for(var i = 0; i < bracket.tournamentModel.data.teams.length; i++) {
+			if(bracket.tournamentModel.data.teams[i][0] === team) {
+				bracket.tournamentModel.data.teams[i][0] = newTeam;
+			} else if(bracket.tournamentModel.data.teams[i][1] === team) {
+				bracket.tournamentModel.data.teams[i][1] = newTeam;
+			}
 		}
-		*/
 	},
 	
 	/*
@@ -145,20 +154,24 @@ var bracket = {
 	/*
 	 * Triggered onBlur for a team name or score
 	 */
-	save: function(bracketObj) {
+	save: function(bracketObj, arg2, doAjax) {
 		console.log("save");
 		console.log(bracketObj);
-		
+		console.log(doAjax);
+
 		bracket.tournamentModel.data.teams = bracketObj.teams;
 		bracket.tournamentModel.data.results = bracketObj.results;
 		console.log(bracket.tournamentModel.data);
 		
-		// TODO: we need to make our server calls properly cause the success function to fire
-		postData('tournaments', bracket.tournamentModel.data, function() {
-			console.log("success");
-		}, function() {
-			console.log("error");
-		});
+		if(doAjax) {
+			// TODO: we need to make our server calls properly cause the success function to fire
+			postData('tournaments', bracket.tournamentModel.data, function() {
+				console.log("success");
+				// TODO: reload? tournament.store.object.reload();
+			}, function() {
+				console.log("error");
+			}, 'PUT');	
+		}
 	},
 	
 	create: function() {
@@ -166,36 +179,34 @@ var bracket = {
 	},
 	
 	show: function(tournamentRow, index) {
-		// TODO: can make them look like this and use all of the data for rendering and other stuff
-		/*    teams : [
-      		[{name: "Team 1", flag: 'fi'}, {name: "Team 2", flag: 'kr'}],
-      		[{name: "Team 3", flag: 'se'}, {name: "Team 4", flag: 'us'}]
-    	]*/
-    	
-    	// TODO: this stuff should be stored on the row, this code until the next TODO will eventually be removed
-		if(index < 2) {
-			tournamentRow['teams'] = teams1;			
-		} else {
-			tournamentRow['teams'] = teams2;
+		/*
+		// this was mock data, so should be removed once we can get this info from the db
+		if(index == 1) {
+			tournamentRow.data['teams'] = teams1;			
+		} else if(index == 2) {
+			tournamentRow.data['teams'] = teams2;
 		}
 		
-		tournamentRow['results'] = [[]];
-		for(var i = 0; i < bracket.teams.length; i++) {
-			bracket.results[0].push(['', '', 'Match ' + (i + 1)]);
+		if(!tournamentRow.data['results']) {
+			tournamentRow.data['results'] = [[]];
+			for(var i = 0; i < bracket.tournamentModel.data.teams.length; i++) {
+				tournamentRow.data.results[0].push(['', '', 'Match ' + (i + 1)]);
+			}
+			console.log("fake results");
 		}
-
-
-
-		// TODO: here is the theoretical start of this function
-		// TODO: we might have to look up this info again OR we'll have to keep the store up to date with the bracket
+		*/
+		
 		bracket.tournamentModel = tournamentRow;
-		bracket.teams = tournamentRow.teams;
-		bracket.results = tournamentRow.results;
 
 		var data = {
-		    teams: bracket.teams,
-		    results : bracket.results
+		    teams: [[]],
+		    results : [[]]
 		};
+		 
+		if(bracket.tournamentModel.data.results && bracket.tournamentModel.data.teams) {
+			data.results = bracket.tournamentModel.data.results;
+			data.teams = bracket.tournamentModel.data.teams;
+		}
 		 
 	    $('#bracket .bracket').bracket({
 	    	 skipConsolationRound: true,

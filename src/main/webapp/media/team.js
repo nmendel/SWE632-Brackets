@@ -88,6 +88,13 @@ var team = {
 	                    		}
 	                    	}
 	                    }
+	                },{
+	                	xtype: 'button',
+	                	text: 'ok',
+	                	scale: 'small',
+	                	listeners: {
+	                		click: team.picker.done
+	                	}
 	                }]
             	}]
             });
@@ -95,18 +102,9 @@ var team = {
 	        return team.picker.object;
 		},
 		
-		pickTeams: function(gameContainer, teamContainers, team1, team2, highlight) {
-			console.log("Pick teams: " + team1 + " vs " + team2);
-			console.log(team.picker.pickingContainer);
-			console.log(team.picker.gameContainer);
-			console.log(team.picker.pickingContainer == null);
+		pickTeams: function(gameContainer, teamContainers, team1, team2, index) {
+		    console.log("Pick teams: " + team1 + " vs " + team2);
 			team.picker.object.show();
-			
-			// stop editing previous game if applicable
-			if(team.picker.pickingContainer != null) {
-				console.log("stop");
-				bracket.doneEditing(team.picker.pickingContainer);
-			}
 			
 			team.picker.pickingContainer = gameContainer;
 			
@@ -114,13 +112,14 @@ var team = {
 			var teamButtons = team.picker.object.query("button");
 			teamButtons[0].setText(team1.substr(0, team.MAX_NAME_LENGTH));
 			teamButtons[1].setText(team2.substr(0, team.MAX_NAME_LENGTH));
-			teamButtons[highlight].toggle(true, true);
-			teamButtons[(highlight + 1) % 2].toggle(false, true);
+			teamButtons[index].toggle(true, true);
+			teamButtons[(index + 1) % 2].toggle(false, true);
 		},
 		
 		done: function() {
 			team.picker.object.hide();
-			bracket.doneEditing(team.picker.pickingContainer);
+			var buttons = team.picker.object.query("button");
+			bracket.doneEditing(team.picker.pickingContainer, buttons[0].text, buttons[1].text);
 		},
 		
 		setTeam: function(grid, row, index) {
@@ -132,7 +131,6 @@ var team = {
 				}
 				
 				teamButtons[index].setText(row.data.team_name.substr(0, team.MAX_NAME_LENGTH));
-				bracket.setTeam(row.data.team_name, index);
 			}
 		}
 		

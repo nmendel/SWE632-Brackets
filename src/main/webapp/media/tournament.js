@@ -8,7 +8,9 @@ Ext.define('TournamentModel',{
 		{name: 't_format'},
 		{name: 't_create'},
 		{name: 't_start', type: 'bool'},
-		{name: 't_end', type: 'bool'}
+		{name: 't_end', type: 'bool'},
+		{name: 'teams'}, 
+		{name: 'results'}
 	]
 });
 
@@ -107,7 +109,7 @@ var tournament = {
     		// create json
     		var json = {};
     		
-    		postData('tournaments', )
+    		postData('tournaments', json);
     	},
     	
     	
