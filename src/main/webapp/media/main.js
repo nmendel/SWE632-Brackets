@@ -85,11 +85,21 @@ Ext.define('Ext.app.LiveBracket', {
 	            },{
 	            	xtype: 'button',
 	            	scale: 'large',
-	            	x: 275,
+	            	x: 272,
 	            	y: 0,
 	            	text: 'Create Tournament',
 	            	listeners: {
 	            		click: tournament.form.create
+	            	}
+	            },{
+	            	xtype: 'button',
+	            	id: 'start-tournament-btn',
+	            	scale: 'large',
+	            	x: 475,
+	            	y: 0,
+	            	text: 'Start Tournament',
+	            	listeners: {
+	            		click: tournament.grid.startSelected
 	            	}
 	            }]
             },

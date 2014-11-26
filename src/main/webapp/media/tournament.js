@@ -246,6 +246,23 @@ var tournament = {
 		
 		onSelect: function(rowModel, row, index) {
 			bracket.show(row, index);
+			
+			var startBtn = Ext.getCmp("start-tournament-btn");
+			if(!row.data.t_start) {
+				startBtn.enable();
+			} else {
+				startBtn.disable();
+			}
+		},
+		
+		startSelected: function() {
+			var json = tournament.grid.object.getSelectionModel().getSelection()[0].data;
+			json.t_start = true;
+			postData('tournaments', json, function(resp) {
+				console.log("success");
+			}, function(resp) {
+				console.log("error");
+			}, 'PUT');
 		}
 	}
 };
