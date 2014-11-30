@@ -121,6 +121,17 @@ Ext.define('Ext.app.LiveBracket', {
                         type: 'accordion',
                         animate: true
                     },
+                    listeners: {
+                    	resize: function(obj, width, height) {
+                    		if(width < 280) {
+                    			width = 280;
+                    		}
+                    		var picker = Ext.getCmp('picker-panel');
+                    		if(picker) {
+                    			picker.setWidth(width);
+                    		}
+                    	}
+                    },
                     items: []
                 },{
                     xtype: 'panel',
