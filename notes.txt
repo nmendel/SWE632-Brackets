@@ -11,3 +11,7 @@ curl -X post localhost:8080/create -H 'content-type: application/json; charset=u
 
 git push origin master
 
+
+
+postData('tournaments', {t_name: 'Battle Royale', t_size: '16', teams: "", results: ""});
+postData('teams', {team_name: 'Dinosaurs', team_location: 'Utah'});
