@@ -20,29 +20,56 @@ public class TournamentServlet extends HttpServlet {
     public void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws IOException {
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
-        Key bracketKey = KeyFactory.createKey(Constants.BRACKET_KEY, Constants.BRACKET_KEY);
-        List <Entity> entities = getTournaments(datastore, bracketKey);
+        List <Entity> entities = getTournaments(datastore);
 
         StringBuffer json = new StringBuffer();
         json.append("[");
+        
         for (Entity entity : entities) {
-            json.append("{\"")
-                .append(Constants.TOURNAMENT_NAME).append("\":\"")
-                .append(entity.getProperty(Constants.TOURNAMENT_NAME)).append("\", \"")
-                .append(Constants.TOURNAMENT_FORMAT).append("\":\"")
-                .append(entity.getProperty(Constants.TOURNAMENT_FORMAT)).append("\", \"")
-                .append(Constants.TOURNAMENT_SIZE).append("\":\"")
-                .append(entity.getProperty(Constants.TOURNAMENT_SIZE)).append("\", \"")
-                .append(Constants.TOURNAMENT_CREATEDATE).append("\":\"")
-                .append(entity.getProperty(Constants.TOURNAMENT_CREATEDATE)).append("\", \"")
-                .append(Constants.TOURNAMENT_START).append("\":\"")
-                .append(entity.getProperty(Constants.TOURNAMENT_START)).append("\", \"")
-                .append(Constants.TOURNAMENT_END).append("\":\"")
-                .append(entity.getProperty(Constants.TOURNAMENT_END)).append("\", \"")
-                .append(Constants.TOURNAMENT_TEAMS).append("\":\"")
-                .append(entity.getProperty(Constants.TOURNAMENT_TEAMS)).append("\", \"")
-                .append(Constants.TOURNAMENT_RESULTS).append("\":\"")
-                .append(entity.getProperty(Constants.TOURNAMENT_RESULTS)).append("\"},\n");
+			
+			json.append("{\"")
+				.append(Constants.TOURNAMENT_NAME).append("\": \"")
+				.append(entity.getProperty(Constants.TOURNAMENT_NAME)).append("\"");
+            
+					
+			if(entity.getProperty(Constants.TOURNAMENT_SIZE) != null) {
+				json.append(", \"")
+					.append(Constants.TOURNAMENT_SIZE).append("\": \"")
+					.append(entity.getProperty(Constants.TOURNAMENT_SIZE)).append("\"");
+			}
+            
+            // optional
+            if(entity.getProperty(Constants.TOURNAMENT_FORMAT) != null) {
+            	json.append(", \"").append(Constants.TOURNAMENT_FORMAT).append("\": \"")
+                .append(entity.getProperty(Constants.TOURNAMENT_FORMAT)).append("\"");
+            }
+            
+            if(entity.getProperty(Constants.TOURNAMENT_CREATEDATE) != null) {
+                json.append(", \"").append(Constants.TOURNAMENT_CREATEDATE).append("\": \"")
+                .append(entity.getProperty(Constants.TOURNAMENT_CREATEDATE)).append("\"");
+            }
+            
+            if(entity.getProperty(Constants.TOURNAMENT_START) != null) {
+                json.append(", \"").append(Constants.TOURNAMENT_START).append("\": \"")
+                .append(entity.getProperty(Constants.TOURNAMENT_START)).append("\"");
+            }
+            
+            if(entity.getProperty(Constants.TOURNAMENT_END) != null) {
+                json.append(", \"").append(Constants.TOURNAMENT_END).append("\": \"")
+                .append(entity.getProperty(Constants.TOURNAMENT_END)).append("\"");
+            }
+            
+            if(entity.getProperty(Constants.TOURNAMENT_TEAMS) != null) {
+                json.append(", \"").append(Constants.TOURNAMENT_TEAMS).append("\": \"")
+                .append(entity.getProperty(Constants.TOURNAMENT_TEAMS)).append("\"");
+            }
+            
+            if(entity.getProperty(Constants.TOURNAMENT_RESULTS) != null) {
+                json.append(", \"").append(Constants.TOURNAMENT_RESULTS).append("\": \"")
+                .append(entity.getProperty(Constants.TOURNAMENT_RESULTS)).append("\"");
+            }
+            
+            json.append("},\n");
         }
 
         String str = "[]";
@@ -140,8 +167,8 @@ public class TournamentServlet extends HttpServlet {
         resp.getWriter().write("Successful");
     }
 
-    public List<Entity> getTournaments(DatastoreService datastore, Key key) {
-        Query query = new Query(Constants.TOURNAMENT_KEY, key)
+    public List<Entity> getTournaments(DatastoreService datastore) {
+        Query query = new Query(Constants.TOURNAMENT_KEY)
                 .addSort(Constants.TOURNAMENT_START, Query.SortDirection.DESCENDING);
         return datastore.prepare(query).asList(FetchOptions.Builder.withDefaults());
     }
