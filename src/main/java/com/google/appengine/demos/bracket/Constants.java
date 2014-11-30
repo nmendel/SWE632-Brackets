@@ -14,6 +14,8 @@ public class Constants {
     public static final String TOURNAMENT_CREATEDATE = "t_create";
     public static final String TOURNAMENT_START = "t_start";
     public static final String TOURNAMENT_END = "t_end";
+    public static final String TOURNAMENT_TEAMS = "teams";
+    public static final String TOURNAMENT_RESULTS = "results";
 
     public static final String TEAM_KEY = "team";
     public static final String TEAM_TOURNAMENT = "team_tournament";

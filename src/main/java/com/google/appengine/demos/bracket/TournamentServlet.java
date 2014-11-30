@@ -38,7 +38,11 @@ public class TournamentServlet extends HttpServlet {
                 .append(Constants.TOURNAMENT_START).append("\":\"")
                 .append(entity.getProperty(Constants.TOURNAMENT_START)).append("\", \"")
                 .append(Constants.TOURNAMENT_END).append("\":\"")
-                .append(entity.getProperty(Constants.TOURNAMENT_END)).append("\"},\n");
+                .append(entity.getProperty(Constants.TOURNAMENT_END)).append("\", \"")
+                .append(Constants.TOURNAMENT_TEAMS).append("\":\"")
+                .append(entity.getProperty(Constants.TOURNAMENT_TEAMS)).append("\", \"")
+                .append(Constants.TOURNAMENT_RESULTS).append("\":\"")
+                .append(entity.getProperty(Constants.TOURNAMENT_RESULTS)).append("\"},\n");
         }
 
         String str = "[]";
@@ -77,8 +81,8 @@ public class TournamentServlet extends HttpServlet {
         entity.setProperty(Constants.TOURNAMENT_CREATEDATE, date);
         entity.setProperty(Constants.TOURNAMENT_START, null);
         entity.setProperty(Constants.TOURNAMENT_END, null);
-        entity.setProperty("teams", tournament.teams);
-        entity.setProperty("results", tournament.results);
+        entity.setProperty(Constants.TOURNAMENT_TEAMS, tournament.teams);
+        entity.setProperty(Constants.TOURNAMENT_RESULTS, tournament.results);
         datastore.put(entity);
 
         resp.getWriter().write(entity.toString());
@@ -122,7 +126,13 @@ public class TournamentServlet extends HttpServlet {
             entity.setProperty(Constants.TOURNAMENT_END, tournament.t_end);
         }
 
-        // TODO :teams and results property
+        if (tournament.teams != null) {
+            entity.setProperty(Constants.TOURNAMENT_TEAMS, tournament.teams);
+        }
+
+        if (tournament.results != null) {
+            entity.setProperty(Constants.TOURNAMENT_RESULTS, tournament.results);
+        }
 
         datastore.put(entity); // update
 
