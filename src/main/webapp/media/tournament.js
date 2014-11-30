@@ -128,11 +128,15 @@ var tournament = {
             var format = Ext.getCmp('tournament_format').getValue().tf;
             var num = Ext.getCmp('num_of_teams').getValue().nt;
 
-    		postData('tournaments', {t_name:name, t_format:format, t_size:num, teams:'', results:''}, null);
+    		postData('tournaments', {t_name:name, t_format:format, t_size:num, teams:'', results:''}, function(resp) {
+    		    tournament.form.reload();
+    		});
     		tournament.form.object.close();
     	},
-    	
-    	
+
+        reload: function() {
+            tournament.store.object.reload();
+        },
 	},
 	
 	panel: {

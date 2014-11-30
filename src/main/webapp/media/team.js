@@ -273,10 +273,10 @@ var team = {
             	} catch(e) {
             		// do nothing
             	}
-            	
+
             });
-            
-            
+
+
        },
        
         removeTeam: function() {
