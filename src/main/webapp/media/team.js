@@ -42,60 +42,67 @@ var team = {
 		
 		create: function() {
 			team.picker.object = Ext.create("Ext.panel.Panel", {
+				id: 'picker-panel',
             	hidden: true,
-            	defaults: {
-                	enableToggle: true
-                },
-                // TODO: text saying what to do, check mark type button for closing, center and make look better
+            	resizeable: true,
+            	layout: {
+            		type: 'fit',
+            	},
             	items: [{
-            		xtype: 'box',
-            		html: '<div><p><h1>Pick teams:</h1></p></div>'
-            	},{
             		xtype: 'panel',
-            		layout: {
-        			    type: 'hbox',
-					    pack: 'center',
-					    align: 'center'
-            		},
-            		border: false,
-            		items: [{
-	                    xtype: 'button',
-	                    text: '',
-	                    scale: 'large',
-	                    margin: '0 20 10 20',
-	                    toggleGroup: 'picker',
-	                    listeners: {
-	                    	// Don't allow this button to be unpressed by pressing it
-	                    	// toggle by pressing the other button only
-	                    	click: function() {
-	                    		if(!this.pressed) {
-	                    			this.toggle(true, true);
-	                    		}
-	                    	}
-	                    }
-	                },{
-	                    xtype: 'button',
-	                    text: '',
-	                    scale: 'large',
-	                    margin: '0 10 10 10',
-	                    toggleGroup: 'picker',
-	                    listeners: {
-	                    	// Don't allow this button to be unpressed by pressing it
-	                    	// toggle by pressing the other button only
-	                    	click: function() {
-	                    		if(!this.pressed) {
-	                    			this.toggle(true, true);
-	                    		}
-	                    	}
-	                    }
-	                },{
-	                	xtype: 'button',
-	                	text: 'ok',
-	                	scale: 'small',
-	                	listeners: {
-	                		click: team.picker.done
-	                	}
-	                }]
+            		defaults: {
+	                	enableToggle: true
+	                },
+	            	items: [{
+	            		xtype: 'box',
+	            		html: '<div style="text-align: center; color: #666;"><p><h1>Set teams:</h1></p></div>'
+	            	},{
+	            		xtype: 'panel',
+	            		layout: {
+	        			    type: 'hbox',
+						    pack: 'center',
+						    align: 'center'
+	            		},
+	            		border: false,
+	            		items: [{
+		                    xtype: 'button',
+		                    text: '',
+		                    scale: 'large',
+		                    margin: '0 20 30 20',
+		                    toggleGroup: 'picker',
+		                    listeners: {
+		                    	// Don't allow this button to be unpressed by pressing it
+		                    	// toggle by pressing the other button only
+		                    	click: function() {
+		                    		if(!this.pressed) {
+		                    			this.toggle(true, true);
+		                    		}
+		                    	}
+		                    }
+		                },{
+		                    xtype: 'button',
+		                    text: '',
+		                    scale: 'large',
+		                    margin: '0 10 30 10',
+		                    toggleGroup: 'picker',
+		                    listeners: {
+		                    	// Don't allow this button to be unpressed by pressing it
+		                    	// toggle by pressing the other button only
+		                    	click: function() {
+		                    		if(!this.pressed) {
+		                    			this.toggle(true, true);
+		                    		}
+		                    	}
+		                    }
+		                },{
+		                	xtype: 'button',
+		                	iconCls: 'ok',
+		                	scale: 'small',
+		                	listeners: {
+		                		click: team.picker.done
+		                	}
+		                }]
+	            	}]
             	}]
             });
             
