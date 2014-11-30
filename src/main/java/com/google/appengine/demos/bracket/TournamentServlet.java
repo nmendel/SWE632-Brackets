@@ -93,6 +93,8 @@ public class TournamentServlet extends HttpServlet {
         }
 
         Tournament tournament = gson.fromJson(json, Tournament.class);
+        tournament.buildTeams();
+        tournament.buildResults();
         
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         Key key = KeyFactory.createKey(Constants.BRACKET_KEY, Constants.BRACKET_KEY);

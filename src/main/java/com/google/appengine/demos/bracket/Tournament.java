@@ -18,6 +18,34 @@ public class Tournament {
 
     }
 
+    public void buildTeams() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("[");
+        for (int i = 0; i < t_size/2; i++) {
+            buffer.append("[--,--]");
+            if (i != t_size/2 - 1) {
+                buffer.append(",");
+            }
+        }
+        buffer.append("]");
+
+        teams = buffer.toString();
+    }
+
+    public void buildResults() {
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("[");
+        for (int i = 0; i < t_size/4; i++) {
+            buffer.append("[[0,0],[0,0]]");
+            if (i != t_size/4 - 1) {
+                buffer.append(", ");
+            }
+        }
+        buffer.append("]");
+
+        results = buffer.toString();
+    }
+
     @Override
     public String toString() {
         return "Tournament{" +
