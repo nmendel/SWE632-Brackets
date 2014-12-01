@@ -1,4 +1,19 @@
 
+function teamsToJSON(v, record) {
+	if(typeof record.data.teams == "string") {
+		return $.parseJSON(record.data.teams);
+	} else {
+		return record.data.teams;	
+	}
+}
+
+function resultsToJSON(v, record) {
+	if(typeof record.data.results == "string") {
+		return $.parseJSON(record.data.results);
+	} else {
+		return record.data.results;	
+	}
+}
 
 Ext.define('TournamentModel',{
 	extend: 'Ext.data.Model',
@@ -9,8 +24,8 @@ Ext.define('TournamentModel',{
 		{name: 't_create'},
 		{name: 't_start', type: 'bool'},
 		{name: 't_end', type: 'bool'},
-		{name: 'teams'}, 
-		{name: 'results'}
+		{name: 'teams', convert: teamsToJSON}, 
+		{name: 'results', convert: resultsToJSON}
 	]
 });
 
@@ -130,6 +145,7 @@ var tournament = {
 
     		postData('tournaments', {t_name:name, t_format:format, t_size:num, teams:'', results:''}, function(resp) {
     		    tournament.form.reload();
+    		    tournament.grid.object.getSelectionModel().select(0); // TODO: change to select the row of new tournament
     		});
     		tournament.form.object.close();
     	},
@@ -230,6 +246,14 @@ var tournament = {
 				},{
 	                text : 'tournament_id',
 	                dataIndex : 'id',
+	                hidden : true
+	            },{
+	                text : 'teams',
+	                dataIndex : 'teams',
+	                hidden : true
+	            },{
+	                text : 'results',
+	                dataIndex : 'results',
 	                hidden : true
 	            }],
 				forceFit: true,

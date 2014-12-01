@@ -179,22 +179,7 @@ var bracket = {
 	},
 	
 	show: function(tournamentRow, index) {
-		/*
-		// this was mock data, so should be removed once we can get this info from the db
-		if(index == 1) {
-			tournamentRow.data['teams'] = teams1;			
-		} else if(index == 2) {
-			tournamentRow.data['teams'] = teams2;
-		}
-		
-		if(!tournamentRow.data['results']) {
-			tournamentRow.data['results'] = [[]];
-			for(var i = 0; i < bracket.tournamentModel.data.teams.length; i++) {
-				tournamentRow.data.results[0].push(['', '', 'Match ' + (i + 1)]);
-			}
-			console.log("fake results");
-		}
-		*/
+		console.log(tournamentRow.data);
 		
 		bracket.tournamentModel = tournamentRow;
 
@@ -207,6 +192,8 @@ var bracket = {
 			data.results = bracket.tournamentModel.data.results;
 			data.teams = bracket.tournamentModel.data.teams;
 		}
+		
+		console.log(data);
 		 
 	    $('#bracket .bracket').bracket({
 	    	 skipConsolationRound: true,
