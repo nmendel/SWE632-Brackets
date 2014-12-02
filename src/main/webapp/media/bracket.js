@@ -1,51 +1,5 @@
 // TODO: disable or use buttons from jquery UI that can change the size and format of the tournament?
 
-// TODO: remove these once we can get them from the db
-var teams1 = [
-		      ["Team 1",  "Team 2" ],
-		      ["Team 3",  "Team 4" ],
-		      ["Team 5",  "Team 6" ],
-		      ["Team 7",  "Team 8" ],
-		      ["Team 9",  "Team 10"],
-		      ["Team 11", "Team 12"],
-		      ["Team 13", "Team 14"],
-		      ["Team 15", "Team 16"],
-];
-var teams2 = [
-		      ["Team 1",  "Team 2" ],
-		      ["Team 3",  "Team 4" ],
-		      ["Team 5",  "Team 6" ],
-		      ["Team 7",  "Team 8" ],
-		      ["Team 9",  "Team 10"],
-		      ["Team 11", "Team 12"],
-		      ["Team 13", "Team 14"],
-		      ["Team 15", "Team 16"],
-		      ["Team 1ff",  "Team 2f" ],
-		      ["Team 3f",  "Team 4f" ],
-		      ["Team 5f",  "Team 6f" ],
-		      ["Team 7f",  "Team 8f" ],
-		      ["Team 9f",  "Team 1f0"],
-		      ["Team 1f1", "Team 1f2"],
-		      ["Team 1f3", "Team 1f4"],
-		      ["Team 1f5", "Team 1f6"],
-		      ["Team 1d",  "Team 2d" ],
-		      ["Team 3d",  "Team 4fd" ],
-		      ["Team 5d",  "Team 6fd" ],
-		      ["Team 7d",  "Team 8fd" ],
-		      ["Team 9d",  "Team 1fd0"],
-		      ["Team 1d1", "Team 12d"],
-		      ["Team 1d3", "Team 14d"],
-		      ["Team 1d5", "Team 16d"],
-		      ["Team 1e",  "Team 2de" ],
-		      ["Team 3e",  "Team 4de" ],
-		      ["Team 5e",  "Team 6de" ],
-		      ["Team 7e",  "Team 8de" ],
-		      ["Team 9e",  "Team 1de0"],
-		      ["Team 1e1", "Team 12e"],
-		      ["Team 1e3", "Team 14e"],
-		      ["Team 1e5", "Team 16e"],
-		];
-		
 var bracket = {
 	editing: false,
 	tournamentModel: null,
@@ -163,11 +117,16 @@ var bracket = {
 		bracket.tournamentModel.data.results = bracketObj.results;
 		console.log(bracket.tournamentModel.data);
 		
+		var json = {
+			t_name: bracket.tournamentModel.data.t_name,
+			teams: JSON.stringify(bracket.tournamentModel.data.teams),
+			results: JSON.stringify(bracket.tournamentModel.data.results)
+		};
+		
 		if(doAjax) {
-			// TODO: we need to make our server calls properly cause the success function to fire
-			postData('tournaments', bracket.tournamentModel.data, function() {
+			postData('tournaments', json, function() {
 				console.log("success");
-				// TODO: reload? tournament.store.object.reload();
+				tournament.store.object.reload();
 			}, function() {
 				console.log("error");
 			}, 'PUT');	
