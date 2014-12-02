@@ -1,6 +1,8 @@
 
 function teamsToJSON(v, record) {
 	if(typeof record.data.teams == "string") {
+	    console.log("teamsToJSON");
+	    console.log(record.data.teams);
 		return $.parseJSON(record.data.teams);
 	} else {
 		return record.data.teams;	
@@ -9,7 +11,9 @@ function teamsToJSON(v, record) {
 
 function resultsToJSON(v, record) {
 	if(typeof record.data.results == "string") {
-		return $.parseJSON(record.data.results);
+		console.log("resultsToJSON");
+        console.log(record.data.results);
+        return $.parseJSON(record.data.results);
 	} else {
 		return record.data.results;	
 	}
@@ -24,14 +28,14 @@ Ext.define('TournamentModel',{
 		{name: 't_create'},
 		{name: 't_start', type: 'bool'},
 		{name: 't_end', type: 'bool'},
-		{name: 'teams', convert: teamsToJSON}, 
-		{name: 'results', convert: resultsToJSON}
+		{name: 'teams'},
+		{name: 'results'}
 	]
 });
 
 var tournament = {
-	teams: null,
-	results: null,
+	teams:[[]],
+	results:[[]],
 	
 	form: {
 		object: null,
@@ -85,16 +89,14 @@ var tournament = {
 		               id:'num_of_teams',
 		               xtype:'radiogroup',
 		               fieldLabel:'Team Count',
-		               columns:3,
+		               columns:2,
 		               padding:10,
 		               vertical:true,
 		               items: [
 		                    { boxLabel: '8' , name: 'nt', inputValue: '8', checked:true },
 		                    { boxLabel: '16', name: 'nt', inputValue: '16'},
-		                    { boxLabel: '24', name: 'nt', inputValue: '24'},
 		                    { boxLabel: '32', name: 'nt', inputValue: '32'},
-		                    { boxLabel: '40', name: 'nt', inputValue: '40'},
-		                    { boxLabel: '48', name: 'nt', inputValue: '48'}
+		                    { boxLabel: '64', name: 'nt', inputValue: '64'}
 		               ]
 		            }),
 		            new Ext.create('Ext.panel.Panel', {
@@ -132,9 +134,12 @@ var tournament = {
 		            })
 		        ]
 		    });
+
+
 		    
 		    tournament.form.object.show();
-		    
+		    Ext.getCmp('tournament_name').focus('', 10);
+
 		    return tournament.form.object;
     	},
     	
@@ -143,10 +148,19 @@ var tournament = {
             var format = Ext.getCmp('tournament_format').getValue().tf;
             var num = Ext.getCmp('num_of_teams').getValue().nt;
 
-    		postData('tournaments', {t_name:name, t_format:format, t_size:num, teams:'', results:''}, function(resp) {
-    		    tournament.form.reload();
-    		    tournament.grid.object.getSelectionModel().select(0); // TODO: change to select the row of new tournament
-    		});
+    		postData('tournaments',
+    		    {
+    		        t_name:name,
+    		        t_format:format,
+    		        t_size:num,
+    		        teams:"[[]]",
+                    results:"[[]]"
+                },
+                function(resp) {
+                    tournament.form.reload();
+                    tournament.grid.object.getSelectionModel().select(0); // TODO: change to select the row of new tournament
+                }
+    		);
     		tournament.form.object.close();
     	},
 
@@ -196,6 +210,7 @@ var tournament = {
 		            }
 		        }
 			});
+
 			return tournament.store.object;
 		}
 	},

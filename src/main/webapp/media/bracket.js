@@ -179,12 +179,12 @@ var bracket = {
 	},
 	
 	show: function(tournamentRow, index) {
-		console.log(tournamentRow.data);
+		console.log(tournamentRow.data); // tournamentRow.data.teams and '...'.results are null here
 		
 		bracket.tournamentModel = tournamentRow;
 
 		var data = {
-		    teams: [[]],
+		    teams : [[]],
 		    results : [[]]
 		};
 		 

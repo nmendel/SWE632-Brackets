@@ -21,9 +21,9 @@ public class Tournament {
     public void buildTeams() {
         StringBuffer buffer = new StringBuffer();
         buffer.append("[");
-        for (int i = 0; i < t_size/2; i++) {
-            buffer.append("[--,--]");
-            if (i != t_size/2 - 1) {
+        for (int i = 1; i <= t_size; i+=2) {
+            buffer.append("[\"Team ").append(i).append("\",\"Team ").append(i+1).append("\"]");
+            if (i != t_size/2) {
                 buffer.append(",");
             }
         }
@@ -34,16 +34,19 @@ public class Tournament {
 
     public void buildResults() {
         StringBuffer buffer = new StringBuffer();
-        buffer.append("[");
-        for (int i = 0; i < t_size/4; i++) {
-            buffer.append("[[0,0],[0,0]]");
+        buffer.append("[[");
+        for (int i = 0; i < t_size/2; i++) {
+            buffer.append("[1,0]");
             if (i != t_size/4 - 1) {
-                buffer.append(", ");
+                buffer.append(",");
             }
         }
-        buffer.append("]");
+        buffer.append("]]");
 
-        results = buffer.toString();
+        // double elimination
+
+//        results = buffer.toString();
+        results = "[[]]";
     }
 
     @Override

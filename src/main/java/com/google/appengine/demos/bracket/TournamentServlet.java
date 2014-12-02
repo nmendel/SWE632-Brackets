@@ -60,13 +60,13 @@ public class TournamentServlet extends HttpServlet {
             }
             
             if(entity.getProperty(Constants.TOURNAMENT_TEAMS) != null) {
-                json.append(", \"").append(Constants.TOURNAMENT_TEAMS).append("\": \"")
-                .append(entity.getProperty(Constants.TOURNAMENT_TEAMS)).append("\"");
+                json.append(", \"").append(Constants.TOURNAMENT_TEAMS).append("\":")
+                .append(entity.getProperty(Constants.TOURNAMENT_TEAMS));
             }
             
             if(entity.getProperty(Constants.TOURNAMENT_RESULTS) != null) {
-                json.append(", \"").append(Constants.TOURNAMENT_RESULTS).append("\": \"")
-                .append(entity.getProperty(Constants.TOURNAMENT_RESULTS)).append("\"");
+                json.append(", \"").append(Constants.TOURNAMENT_RESULTS).append("\": ")
+                .append(entity.getProperty(Constants.TOURNAMENT_RESULTS));
             }
             
             json.append("},\n");
@@ -93,6 +93,8 @@ public class TournamentServlet extends HttpServlet {
         }
 
         Tournament tournament = gson.fromJson(json, Tournament.class);
+        System.out.println(tournament);
+
         tournament.buildTeams();
         tournament.buildResults();
         
@@ -126,6 +128,8 @@ public class TournamentServlet extends HttpServlet {
         if (json == null || json.isEmpty()) {
             return;
         }
+
+        System.out.println(json);
 
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         Tournament tournament = gson.fromJson(json, Tournament.class);
