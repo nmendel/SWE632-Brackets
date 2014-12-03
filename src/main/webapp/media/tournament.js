@@ -305,8 +305,12 @@ var tournament = {
 		},
 		
 		startSelected: function() {
-			var json = tournament.grid.object.getSelectionModel().getSelection()[0].data;
-			json.t_start = true;
+			var data = tournament.grid.object.getSelectionModel().getSelection()[0].data;
+			var json = {
+				t_name: data.t_name,
+				t_start: true
+			};
+			
 			postData('tournaments', json, function(resp) {
 				console.log("success");
 			}, function(resp) {
