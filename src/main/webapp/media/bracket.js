@@ -127,6 +127,8 @@ var bracket = {
 			postData('tournaments', json, function() {
 				console.log("success");
 				tournament.store.object.reload();
+				// simulate click - this seems sort of crazy
+				$('div.label.editable').click();
 			}, function() {
 				console.log("error");
 			}, 'PUT');	
@@ -161,5 +163,11 @@ var bracket = {
     		 decorator: {edit: bracket.editMatch,
     		 			 render: bracket.renderMatch}
 		});
+		
+		// Hide those jquery bracket buttons
+		$('span.increment').hide();
+		$('span.decrement').hide();
+		$('span.doubleelimination').hide();
+		$('span.singleelimination').hide();
 	}
 };

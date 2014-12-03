@@ -40,7 +40,7 @@ function init() {
 		if(tournament.store.object.getCount() > 0) {
 			tournament.grid.object.getSelectionModel().select(0);	
 		}	
-	}, 500);
+	}, 900);
 	
 
 }
