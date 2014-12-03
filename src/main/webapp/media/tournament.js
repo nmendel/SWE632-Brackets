@@ -148,6 +148,12 @@ var tournament = {
             var format = Ext.getCmp('tournament_format').getValue().tf;
             var num = Ext.getCmp('num_of_teams').getValue().nt;
 
+            if (name == '') {
+                Ext.getCmp('tournament_name').setFieldStyle('border-color:red;background-image:none');
+                Ext.getCmp('tournament_name').focus('', 10);
+                return;
+            }
+
     		postData('tournaments',
     		    {
     		        t_name:name,
