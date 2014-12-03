@@ -24,7 +24,8 @@ public class TournamentServlet extends HttpServlet {
 
         StringBuffer json = new StringBuffer();
         json.append("[");
-        
+
+        String results = null, teams = null;
         for (Entity entity : entities) {
 			
 			json.append("{\"")
@@ -60,13 +61,15 @@ public class TournamentServlet extends HttpServlet {
             }
             
             if(entity.getProperty(Constants.TOURNAMENT_TEAMS) != null) {
-                json.append(", \"").append(Constants.TOURNAMENT_TEAMS).append("\":")
-                .append(entity.getProperty(Constants.TOURNAMENT_TEAMS));
+                teams = ((Text) entity.getProperty(Constants.TOURNAMENT_TEAMS)).getValue();
+
+                json.append(", \"").append(Constants.TOURNAMENT_TEAMS).append("\":").append(teams);
             }
             
             if(entity.getProperty(Constants.TOURNAMENT_RESULTS) != null) {
-                json.append(", \"").append(Constants.TOURNAMENT_RESULTS).append("\": ")
-                .append(entity.getProperty(Constants.TOURNAMENT_RESULTS));
+                results = ((Text) entity.getProperty(Constants.TOURNAMENT_RESULTS)).getValue();
+
+                json.append(", \"").append(Constants.TOURNAMENT_RESULTS).append("\": ").append(results);
             }
             
             json.append("},\n");
@@ -93,8 +96,6 @@ public class TournamentServlet extends HttpServlet {
         }
 
         Tournament tournament = gson.fromJson(json, Tournament.class);
-        System.out.println(tournament);
-
         tournament.buildTeams();
         tournament.buildResults();
         
@@ -112,8 +113,8 @@ public class TournamentServlet extends HttpServlet {
         entity.setProperty(Constants.TOURNAMENT_CREATEDATE, date);
         entity.setProperty(Constants.TOURNAMENT_START, null);
         entity.setProperty(Constants.TOURNAMENT_END, null);
-        entity.setProperty(Constants.TOURNAMENT_TEAMS, tournament.teams);
-        entity.setProperty(Constants.TOURNAMENT_RESULTS, tournament.results);
+        entity.setProperty(Constants.TOURNAMENT_TEAMS, new Text(tournament.teams));
+        entity.setProperty(Constants.TOURNAMENT_RESULTS, new Text(tournament.results));
         datastore.put(entity);
 
         resp.getWriter().write(entity.toString());
@@ -128,8 +129,6 @@ public class TournamentServlet extends HttpServlet {
         if (json == null || json.isEmpty()) {
             return;
         }
-
-        System.out.println(json);
 
         DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         Tournament tournament = gson.fromJson(json, Tournament.class);
