@@ -155,6 +155,10 @@ public class TournamentServlet extends HttpServlet {
             entity.setProperty(Constants.TOURNAMENT_SIZE, tournament.t_size);
         }
 
+        if (tournament.t_start != null) {
+            entity.setProperty(Constants.TOURNAMENT_START, tournament.t_start);
+        }
+
         if (tournament.t_end != null) {
             entity.setProperty(Constants.TOURNAMENT_END, tournament.t_end);
         }
@@ -170,7 +174,7 @@ public class TournamentServlet extends HttpServlet {
         datastore.put(entity); // update
 
         resp.addHeader("Access-Control-Allow-Origin", "*");
-        resp.getWriter().write("Successful");
+        resp.getWriter().write(entity.toString());
     }
 
     public List<Entity> getTournaments(DatastoreService datastore) {

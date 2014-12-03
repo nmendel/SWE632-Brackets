@@ -164,7 +164,6 @@ var tournament = {
                 },
                 function(resp) {
                     tournament.form.reload();
-                    tournament.grid.object.getSelectionModel().select(0); // TODO: change to select the row of new tournament
                 }
     		);
     		tournament.form.object.close();
@@ -172,6 +171,12 @@ var tournament = {
 
         reload: function() {
             tournament.store.object.reload();
+            // race condition with the GET call, adjust as needed
+			setTimeout(function() {
+				if(tournament.store.object.getCount() > 0) {
+					tournament.grid.object.getSelectionModel().select(0);	
+				}	
+			}, 600);
         },
 	},
 	
@@ -308,11 +313,12 @@ var tournament = {
 			var data = tournament.grid.object.getSelectionModel().getSelection()[0].data;
 			var json = {
 				t_name: data.t_name,
-				t_start: true
+				t_start: 1
 			};
 			
 			postData('tournaments', json, function(resp) {
 				console.log("success");
+				tournament.store.object.reload();
 			}, function(resp) {
 				console.log("error");
 			}, 'PUT');
