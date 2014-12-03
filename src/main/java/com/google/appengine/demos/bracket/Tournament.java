@@ -1,5 +1,7 @@
 package com.google.appengine.demos.bracket;
 
+import com.google.appengine.api.datastore.Text;
+
 /**
  * Created by hung on 11/15/14.
  */
