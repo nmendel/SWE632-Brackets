@@ -95,18 +95,30 @@ public class TournamentServlet extends HttpServlet {
             return;
         }
 
+        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
         Tournament tournament = gson.fromJson(json, Tournament.class);
+
+        // Query the entity with name
+        Query query = new Query(Constants.TOURNAMENT_KEY);
+        query.setFilter(Query.FilterOperator.EQUAL.of(Constants.TOURNAMENT_NAME, tournament.t_name));
+
+        PreparedQuery pq = datastore.prepare(query);
+        Entity entity = pq.asSingleEntity();
+        if (entity != null) {
+            resp.getWriter().write("exists");
+            return;
+        }
+
         tournament.buildTeams();
         tournament.buildResults();
-        
-        DatastoreService datastore = DatastoreServiceFactory.getDatastoreService();
+
         Key key = KeyFactory.createKey(Constants.BRACKET_KEY, Constants.BRACKET_KEY);
         
 		DateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");
 		Date today = new Date();
 		String date = df.format(today);
 
-        Entity entity = new Entity(Constants.TOURNAMENT_KEY, key);
+        entity = new Entity(Constants.TOURNAMENT_KEY, key);
         entity.setProperty(Constants.TOURNAMENT_NAME, tournament.t_name);
         entity.setProperty(Constants.TOURNAMENT_FORMAT, tournament.t_format);
         entity.setProperty(Constants.TOURNAMENT_SIZE, tournament.t_size);

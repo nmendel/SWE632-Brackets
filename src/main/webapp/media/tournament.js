@@ -43,7 +43,7 @@ var tournament = {
 		create: function() {
 			tournament.form.object = new Ext.form.Panel({
 		        width:400,
-		        height:320,
+		        height:350,
 		        title:'',
 		        floating:true,
 		        closable:true,
@@ -63,10 +63,29 @@ var tournament = {
                             xtype:'label',
                             text:'New Tournament',
                             align:'middle',
-                            style: 'font-size:20px'
+                            style:'font-size:20px'
                         }]
 		            }),
+		            new Ext.create('Ext.panel.Panel', {
+                        width:400,
+                        padding:10,
+                        border:false,
+                        xtype: 'panel',
+                        layout: {
+                            type: 'hbox',
+                            pack: 'center',
+                            align: 'center'
+                        },
+                        items:[{
+                            xtype:'label',
+                            id:'error_label',
+                            text:'',
+                            align:'middle',
+                            style:'font-size:14px;color:red;'
+                        }]
+                    }),
 		            {
+		                width:300,
 		                id:'tournament_name',
 		                xtype:'textfield',
 		                fieldLabel:'Name',
@@ -134,8 +153,6 @@ var tournament = {
 		            })
 		        ]
 		    });
-
-
 		    
 		    tournament.form.object.show();
 		    Ext.getCmp('tournament_name').focus('', 10);
@@ -151,6 +168,7 @@ var tournament = {
             if (name == '') {
                 Ext.getCmp('tournament_name').setFieldStyle('border-color:red;background-image:none');
                 Ext.getCmp('tournament_name').focus('', 10);
+                Ext.getCmp('error_label').setText("The tournament name field is empty. Please enter a name.");
                 return;
             }
 
@@ -163,10 +181,16 @@ var tournament = {
                     results:"[[]]"
                 },
                 function(resp) {
-                    tournament.form.reload();
+                    if (resp.responseText == 'exists') {
+                        Ext.getCmp('tournament_name').setFieldStyle('border-color:red;background-image:none');
+                        Ext.getCmp('tournament_name').focus('', 10);
+                        Ext.getCmp('error_label').setText("The tournament name is already registered.");
+                    } else {
+                        tournament.form.reload();
+                        tournament.form.object.close();
+                    }
                 }
     		);
-    		tournament.form.object.close();
     	},
 
         reload: function() {

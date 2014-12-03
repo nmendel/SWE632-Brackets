@@ -213,6 +213,7 @@ var team = {
 					text: "Team Name",
 					width: 140,
 					dataIndex: 'team_name',
+					name:'team_name',
 					sortable: true,
 		            editor: {
 		                allowBlank: true
@@ -221,6 +222,7 @@ var team = {
 					text: "Location",
 					width: 140,
 					dataIndex: 'team_location',
+					name:'team_location',
 					sortable: true,
 		            editor: {
 		                allowBlank: true
@@ -282,9 +284,7 @@ var team = {
             	}
 
             });
-
-
-       },
+        },
        
         removeTeam: function() {
         	var store = team.grid.object.getStore();
