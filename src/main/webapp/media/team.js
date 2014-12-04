@@ -83,7 +83,7 @@ var team = {
 		                    xtype: 'button',
 		                    text: '',
 		                    scale: 'large',
-		                    margin: '0 10 30 10',
+		                    margin: '0 20 30 10',
 		                    toggleGroup: 'picker',
 		                    listeners: {
 		                    	// Don't allow this button to be unpressed by pressing it

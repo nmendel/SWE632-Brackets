@@ -85,9 +85,6 @@ div.jQBracket .team.picking.highlight {
 }
 
 .ok {
-    /*background-image: url(../img/check-mark.png) !important;*/
-    /*background-image: url(../img/blue-white-pearl-icon.png) !important;*/
-    /*background-image: url(../ext-4.2.1/resources/ext-theme-neptune/images/dd/drop-add.png);*/
     background-image: url(../ext-4.2.1/resources/ext-theme-neptune/images/dd/check-mark.png);
     width: 5%;
     height: 5%;
