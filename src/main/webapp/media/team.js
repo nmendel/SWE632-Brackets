@@ -293,12 +293,10 @@ var team = {
             
             // TODO: needs to be implemented, make ajax call and update store/grid
             
-            store.remove(sm.getSelection());
-            // \TODO
             
-            if (store.getCount() > 0) {
-                sm.select(0);
-            }
+            //if (store.getCount() > 0) {
+            //    sm.select(0);
+            //}
         }
 	}
 };

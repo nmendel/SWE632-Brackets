@@ -2,6 +2,8 @@
 
 var bracket = {
 	editing: false,
+	editingIndex: 0,
+	saving: false,
 	tournamentModel: null,
 	
 	gameEditing: {
@@ -93,8 +95,12 @@ var bracket = {
 		for(var i = 0; i < bracket.tournamentModel.data.teams.length; i++) {
 			if(bracket.tournamentModel.data.teams[i][0] === team) {
 				bracket.tournamentModel.data.teams[i][0] = newTeam;
+				bracket.editingIndex = i * 2;
+				break;
 			} else if(bracket.tournamentModel.data.teams[i][1] === team) {
 				bracket.tournamentModel.data.teams[i][1] = newTeam;
+				bracket.editingIndex = (i * 2) + 1;
+				break;
 			}
 		}
 	},
@@ -125,21 +131,24 @@ var bracket = {
 		};
 		
 		if(doAjax) {
+			bracket.saving = true;
 			postData('tournaments', json, function() {
 				console.log("success");
 				tournament.store.object.reload();
 				// simulate click - this seems sort of crazy
-				$('div.label.editable').click();
+				$('div.team:not(.picking)').children('div.label.editable')[bracket.editingIndex + 1 % 3].click();
 			}, function() {
 				console.log("error");
 			}, 'PUT');	
-		} else {
+		} else if(!bracket.saving) {
 			// Do it anyway, but don't reload stuff
 			postData('tournaments', json, function() {
 				console.log("success");
 			}, function() {
 				console.log("error");
 			}, 'PUT');	
+		} else {
+			bracket.saving = false;
 		}
 	},
 	
