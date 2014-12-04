@@ -60,17 +60,27 @@ public class TournamentServlet extends HttpServlet {
                 .append(entity.getProperty(Constants.TOURNAMENT_END)).append("\"");
             }
             
+            
             if(entity.getProperty(Constants.TOURNAMENT_TEAMS) != null) {
-                teams = (String) entity.getProperty(Constants.TOURNAMENT_TEAMS); 
+            	try {
+                	teams = ((Text) entity.getProperty(Constants.TOURNAMENT_TEAMS)).getValue();
+                } catch (Exception e) {
+                	teams = (String) entity.getProperty(Constants.TOURNAMENT_TEAMS);
+                } 
 
                 json.append(", \"").append(Constants.TOURNAMENT_TEAMS).append("\":").append(teams);
             }
             
             if(entity.getProperty(Constants.TOURNAMENT_RESULTS) != null) {
-                results = (String) entity.getProperty(Constants.TOURNAMENT_RESULTS);
+            	try {
+                	results = ((Text) entity.getProperty(Constants.TOURNAMENT_RESULTS)).getValue(); 
+                } catch (Exception e) {
+                	results = (String) entity.getProperty(Constants.TOURNAMENT_RESULTS);
+                } 
 
                 json.append(", \"").append(Constants.TOURNAMENT_RESULTS).append("\": ").append(results);
             }
+            
             
             json.append("},\n");
         }
