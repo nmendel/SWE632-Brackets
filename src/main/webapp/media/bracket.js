@@ -26,13 +26,14 @@ var bracket = {
 	 * Triggered if you click on a team name
 	 */
 	editMatch: function(container, data, doneCb) {
+
 		// short circuit
 		if(bracket.editing) {
 			bracket.editing = false;
 			doneCb(data);
 			return;
 		}
-		
+
 		// TODO: handle switching, is it necessary?
 		if(bracket.gameEditing.container != null) {
 			//console.log("b " + bracket.gameEditing.container);
@@ -112,7 +113,7 @@ var bracket = {
 		console.log("save");
 		console.log(bracketObj);
 		console.log(doAjax);
-
+		
 		bracket.tournamentModel.data.teams = bracketObj.teams;
 		bracket.tournamentModel.data.results = bracketObj.results;
 		console.log(bracket.tournamentModel.data);
@@ -129,6 +130,13 @@ var bracket = {
 				tournament.store.object.reload();
 				// simulate click - this seems sort of crazy
 				$('div.label.editable').click();
+			}, function() {
+				console.log("error");
+			}, 'PUT');	
+		} else {
+			// Do it anyway, but don't reload stuff
+			postData('tournaments', json, function() {
+				console.log("success");
 			}, function() {
 				console.log("error");
 			}, 'PUT');	
